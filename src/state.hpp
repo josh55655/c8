@@ -19,6 +19,8 @@ public:
      * In our Chip 8 emulator, data is stored in an array in which each address contains one byte. As one opcode is 2
      * bytes long, we will need to fetch two successive bytes and merge them to get the actual opcode. */
     void fetch();
+
+    friend class StateTest;
 };
 
 }  // namespace chip8

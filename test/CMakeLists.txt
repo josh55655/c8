@@ -15,7 +15,7 @@ set(BUILD_SHARED_LIBS no)
 set(TEST_SRC
     src/main.cpp                  # entry point
     src/test_gtest.cpp            # test for gtest framework is working
-    )
+    src/test_state.cpp)
 
 enable_testing()
 
@@ -55,6 +55,7 @@ endif ()
 
 include_directories(
         src
+        ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_CURRENT_BINARY_DIR})
 
 # Now simply link against gtest or gtest_main as needed. Eg
@@ -62,6 +63,7 @@ add_executable(chip8_test
                ${TEST_SRC})
 
 target_link_libraries(chip8_test
+                      c8support
                       gtest gmock)
 
 add_test(NAME chip8_test COMMAND chip8_test)
