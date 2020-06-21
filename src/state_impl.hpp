@@ -15,7 +15,6 @@ struct State::_Pimpl {
     std::array<word, STACK_SIZE> stack;                 // function call stack
     std::array<byte, KEYPAD_SIZE> key;                  // keypad event mapper
 
-    word opcode;      // current opcode to decode/execute
     word i;           // index register
     word pc;          // program counter
     word sp;          // stack pointer

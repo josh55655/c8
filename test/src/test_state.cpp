@@ -18,13 +18,11 @@ class StateTest : public testing::Test {
 protected:
     void SetUp() override {
         state = make_unique<State>();
-        state->_impl->pc = 0;
+        state->pc(0);
         copy(program.begin(), program.end(), state->_impl->memory.begin());
     }
 
     void TearDown() override { state.reset(); }
-
-    const State::_Pimpl &impl() const { return *state->_impl; }
 
     unique_ptr<State> state;
     array<byte, 16> program{
@@ -33,12 +31,12 @@ protected:
 };
 
 TEST_F(StateTest, fetch) {
-    state->fetch();
-    ASSERT_EQ(0x0102, impl().opcode);
-    ASSERT_EQ(2, impl().pc);
-    state->fetch();
-    ASSERT_EQ(0x0304, impl().opcode);
-    ASSERT_EQ(4, impl().pc);
+    word opcode = state->fetch();
+    ASSERT_EQ(0x0102, opcode);
+    ASSERT_EQ(2, state->pc());
+    opcode = state->fetch();
+    ASSERT_EQ(0x0304, opcode);
+    ASSERT_EQ(4, state->pc());
 }
 
 }  // namespace chip8
