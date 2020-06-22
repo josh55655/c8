@@ -32,8 +32,8 @@ public:
     virtual word indexRegister() const;
     virtual void indexRegister(word v);
 
-    word pc() const;
-    void pc(word _pc);
+    virtual word pc() const;
+    virtual void pc(word _pc);
 
     virtual void push(word datum);
 

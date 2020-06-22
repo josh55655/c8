@@ -12,6 +12,7 @@ class State;
 class Opcode {
 public:
     enum {
+        CALL_OPCODE = 0x2000,
         MVI_OPCODE = 0xA000,
     };
 

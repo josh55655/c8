@@ -34,7 +34,10 @@ public:
     Opcode &find(word code) { return *_codes.find(code)->second; }
 
 private:
-    OpCodeContainer() { _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>(); }
+    OpCodeContainer() {
+        _codes[Opcode::CALL_OPCODE] = make_unique<opcode::CALL>();
+        _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
+    }
 
     map<word, OpcodePtr> _codes;
 };
@@ -50,6 +53,10 @@ Opcode::Opcode(const std::string nmemonic, word code) : nmemonic(nmemonic), code
 
 void Opcode::operator()(State &state, word _data) { apply(state, _data); }
 
+void opcode::CALL::apply(State &state, word _data) {
+    state.push(state.pc());
+    state.pc(_data);
+}
 void opcode::MVI::apply(State &state, word _data) { state.indexRegister(_data); }
 
 }  // namespace chip8

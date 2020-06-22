@@ -5,6 +5,12 @@
 
 namespace chip8::opcode {
 
+class CALL : public Opcode {
+public:
+    CALL() : Opcode("call", CALL_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 class MVI : public Opcode {
 public:
     MVI() : Opcode("mvi", MVI_OPCODE) {}

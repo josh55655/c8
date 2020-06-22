@@ -34,4 +34,30 @@ TEST(OpCodesTest, MVI_execute) {
     loop.execute(loop.decode());
 }
 
+TEST(OpCodesTest, CALL_decode) {
+    NiceMock<StateMock> state;
+    Loop loop(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x2123));
+    loop.fetch();
+    auto [op, data] = loop.decode();
+    ASSERT_EQ(0x0123, data);
+    ASSERT_EQ("call", op.nmemonic);
+    ASSERT_EQ(0x2000, op.code);
+}
+
+TEST(OpCodesTest, CALL_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Loop loop(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x2123));
+    EXPECT_CALL(state, pc()).WillOnce(Return(0x202));
+    EXPECT_CALL(state, push(0x202)).Times(1);
+    EXPECT_CALL(state, pc(0x0123)).Times(1);
+
+    loop.fetch();
+    loop.execute(loop.decode());
+}
+
 }  // namespace chip8
