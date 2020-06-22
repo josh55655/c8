@@ -19,6 +19,7 @@ public:
     using Decoded = std::pair<Opcode &, word>;
 
     explicit Loop(State &state);
+    virtual ~Loop();
 
     /** the system will fetch one opcode from the memory at the location specified by the program counter (pc).
      * In our Chip 8 emulator, data is stored in an array in which each address contains one byte. As one opcode is 2
@@ -30,6 +31,7 @@ public:
 
     /** execude a decoded operation. */
     void execute(Decoded &op);
+    void execute(Decoded &&op);
 };
 
 }  // namespace chip8

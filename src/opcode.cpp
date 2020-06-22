@@ -46,7 +46,7 @@ Opcode &makeOpcode(word opcode) {
     return OpCodeContainer::instance().find(code);
 }
 
-Opcode::Opcode() {}
+Opcode::Opcode(const std::string nmemonic, word code) : nmemonic(nmemonic), code(code) {}
 
 void Opcode::operator()(State &state, word _data) { apply(state, _data); }
 

@@ -1,6 +1,8 @@
 #ifndef CHIP8_OPCODE_HPP
 #define CHIP8_OPCODE_HPP
 
+#include <string>
+
 #include "defines.hpp"
 
 namespace chip8 {
@@ -13,11 +15,14 @@ public:
         MVI_OPCODE = 0xA000,
     };
 
-    Opcode();
+    explicit Opcode(const std::string nmemonic, word code);
     virtual ~Opcode() {}
 
     virtual void apply(State &state, word _data) = 0;
     void operator()(State &state, word _data);
+
+    const std::string nmemonic;
+    const word code;
 };
 
 Opcode &makeOpcode(word opcode);

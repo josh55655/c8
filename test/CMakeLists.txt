@@ -15,7 +15,8 @@ set(BUILD_SHARED_LIBS no)
 set(TEST_SRC
     src/main.cpp                  # entry point
     src/test_gtest.cpp            # test for gtest framework is working
-    src/test_state.cpp)
+    src/test_state.cpp
+    src/test_opcodes.cpp)
 
 enable_testing()
 
