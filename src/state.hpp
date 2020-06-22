@@ -35,6 +35,8 @@ public:
     word pc() const;
     void pc(word _pc);
 
+    virtual void push(word datum);
+
     friend class StateTest;
 };
 

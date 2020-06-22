@@ -37,4 +37,9 @@ void State::indexRegister(word v) { _impl->i = v; }
 word State::pc() const { return _impl->pc; }
 void State::pc(word _pc) { _impl->pc = _pc; }
 
+void State::push(word datum) {
+    _impl->stack[_impl->sp] = datum;
+    ++_impl->sp;
+}
+
 }  // namespace chip8
