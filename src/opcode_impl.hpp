@@ -23,6 +23,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class NEQ : public Opcode {
+public:
+    NEQ() : Opcode("neq", NEQ_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 class MVI : public Opcode {
 public:
     MVI() : Opcode("mvi", MVI_OPCODE) {}
