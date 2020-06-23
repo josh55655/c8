@@ -15,9 +15,9 @@ Core::~Core() = default;
 
 void Core::fetch() { _impl->opcode = _impl->state.fetch(); }
 
-Core::Decoded Core::decode() { return {makeOpcode(_impl->opcode & 0xF000), _impl->opcode & 0x0FFF}; }
+Core::DecodedOperation Core::decode() { return {makeOpcode(_impl->opcode & 0xF000), _impl->opcode & 0x0FFF}; }
 
-void Core::execute(Decoded &op) { op.first(_impl->state, op.second); }
-void Core::execute(Decoded &&op) { op.first(_impl->state, op.second); }
+void Core::execute(DecodedOperation &op) { op.first(_impl->state, op.second); }
+void Core::execute(DecodedOperation &&op) { op.first(_impl->state, op.second); }
 
 }  // namespace chip8

@@ -16,7 +16,7 @@ class Core {
     std::unique_ptr<_Pimpl> _impl;
 
 public:
-    using Decoded = std::pair<Opcode &, word>;
+    using DecodedOperation = std::pair<Opcode &, word>;
 
     explicit Core(State &state);
     virtual ~Core();
@@ -27,11 +27,11 @@ public:
     void fetch();
 
     /** decode the opcode and returns a decoded operation ready to run. */
-    Decoded decode();
+    DecodedOperation decode();
 
     /** execude a decoded operation. */
-    void execute(Decoded &op);
-    void execute(Decoded &&op);
+    void execute(DecodedOperation &op);
+    void execute(DecodedOperation &&op);
 };
 
 }  // namespace chip8
