@@ -35,6 +35,7 @@ public:
 
 private:
     OpCodeContainer() {
+        _codes[Opcode::JMP_OPCODE] = make_unique<opcode::JMP>();
         _codes[Opcode::CALL_OPCODE] = make_unique<opcode::CALL>();
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
     }
@@ -57,6 +58,9 @@ void opcode::CALL::apply(State &state, word _data) {
     state.push(state.pc());
     state.pc(_data);
 }
+
 void opcode::MVI::apply(State &state, word _data) { state.indexRegister(_data); }
+
+void opcode::JMP::apply(State &state, word _data) { state.pc(_data); }
 
 }  // namespace chip8
