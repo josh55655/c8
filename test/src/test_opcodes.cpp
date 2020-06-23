@@ -156,4 +156,45 @@ TEST(OpCodesTest, NEQ_execute) {
     ASSERT_EQ(0x24, v2);
 }
 
+TEST(OpCodesTest, CMP_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x5120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ("cmp", op.nmemonic);
+    ASSERT_EQ(0x5000, op.code);
+}
+
+TEST(OpCodesTest, CMP_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 0x23;
+    byte v2 = 0x24;
+    byte v3 = 0x23;
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x5120));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(v2));
+    EXPECT_CALL(state, pc(_)).Times(0);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x5130));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, v(3)).WillOnce(ReturnRef(v3));
+    EXPECT_CALL(state, pc()).WillOnce(Return(0x202));
+    EXPECT_CALL(state, pc(0x204)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+    core.fetch();
+    core.execute(core.decode());
+
+    ASSERT_EQ(0x23, v1);
+    ASSERT_EQ(0x24, v2);
+    ASSERT_EQ(0x23, v3);
+}
+
 }  // namespace chip8

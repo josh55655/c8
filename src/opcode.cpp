@@ -39,6 +39,7 @@ private:
         _codes[Opcode::CALL_OPCODE] = make_unique<opcode::CALL>();
         _codes[Opcode::EQ_OPCODE] = make_unique<opcode::EQ>();
         _codes[Opcode::NEQ_OPCODE] = make_unique<opcode::NEQ>();
+        _codes[Opcode::CMP_OPCODE] = make_unique<opcode::CMP>();
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
     }
 
@@ -78,6 +79,15 @@ void opcode::NEQ::apply(State &state, word _data) {
     byte reg = (_data & 0x0F00) >> 8;
     byte val = _data & 0x00FF;
     if (state.v(reg) != val) {
+        // skip next instruction
+        state.pc(state.pc() + State::OPCODE_BYTES);
+    }
+}
+
+void opcode::CMP::apply(State &state, word _data) {
+    byte r1 = (_data & 0x0F00) >> 8;
+    byte r2 = (_data & 0x00F0) >> 4;
+    if (state.v(r1) == state.v(r2)) {
         // skip next instruction
         state.pc(state.pc() + State::OPCODE_BYTES);
     }

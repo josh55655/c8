@@ -29,6 +29,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class CMP : public Opcode {
+public:
+    CMP() : Opcode("cmp", CMP_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 class MVI : public Opcode {
 public:
     MVI() : Opcode("mvi", MVI_OPCODE) {}
