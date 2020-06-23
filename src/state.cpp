@@ -26,7 +26,7 @@ void State::load(const byte *program, std::size_t size, word address) {
 
 word State::fetch() {
     word opcode = (_impl->memory.at(_impl->pc) << 8) | _impl->memory.at(_impl->pc + 1);
-    _impl->pc += 2;
+    _impl->pc += OPCODE_BYTES;
 
     return opcode;
 }
@@ -41,5 +41,8 @@ void State::push(word datum) {
     _impl->stack[_impl->sp] = datum;
     ++_impl->sp;
 }
+
+byte &State::v(byte index) { return _impl->v.at(index); }
+byte &State::v(byte index) const { return _impl->v.at(index); }
 
 }  // namespace chip8

@@ -17,6 +17,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class EQ : public Opcode {
+public:
+    EQ() : Opcode("eq", EQ_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 class MVI : public Opcode {
 public:
     MVI() : Opcode("mvi", MVI_OPCODE) {}

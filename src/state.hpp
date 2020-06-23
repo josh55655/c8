@@ -17,6 +17,7 @@ class State {
 
 public:
     static constexpr word CODE_ADDRESS{0x200};
+    static constexpr word OPCODE_BYTES{2};
 
     State();
     virtual ~State();
@@ -28,6 +29,9 @@ public:
      * In our Chip 8 emulator, data is stored in an array in which each address contains one byte. As one opcode is 2
      * bytes long, we will need to fetch two successive bytes and merge them to get the actual opcode. */
     virtual word fetch();
+
+    virtual byte &v(byte index);
+    virtual byte &v(byte index) const;
 
     virtual word indexRegister() const;
     virtual void indexRegister(word v);
