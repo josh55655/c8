@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(c8support
             src/interpreter.cpp
-            src/state.cpp src/opcode.hpp src/opcode.cpp src/opcode_impl.hpp src/loop.cpp)
+            src/state.cpp src/opcode.hpp src/opcode.cpp src/opcode_impl.hpp src/core.cpp)
 
 add_executable(chip8
                src/main.cpp)

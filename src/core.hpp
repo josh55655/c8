@@ -1,5 +1,5 @@
-#ifndef CHIP8_LOOP_HPP
-#define CHIP8_LOOP_HPP
+#ifndef CHIP8_CORE_HPP
+#define CHIP8_CORE_HPP
 
 #include <memory>
 #include <tuple>
@@ -11,15 +11,15 @@ namespace chip8 {
 class State;
 class Opcode;
 
-class Loop {
+class Core {
     struct _Pimpl;
     std::unique_ptr<_Pimpl> _impl;
 
 public:
     using Decoded = std::pair<Opcode &, word>;
 
-    explicit Loop(State &state);
-    virtual ~Loop();
+    explicit Core(State &state);
+    virtual ~Core();
 
     /** the system will fetch one opcode from the memory at the location specified by the program counter (pc).
      * In our Chip 8 emulator, data is stored in an array in which each address contains one byte. As one opcode is 2
@@ -36,4 +36,4 @@ public:
 
 }  // namespace chip8
 
-#endif  // CHIP8_LOOP_HPP
+#endif  // CHIP8_CORE_HPP

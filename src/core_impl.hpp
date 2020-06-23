@@ -1,11 +1,11 @@
-#ifndef CHIP8_LOOP_IMPL_HPP
-#define CHIP8_LOOP_IMPL_HPP
+#ifndef CHIP8_CORE_IMPL_HPP
+#define CHIP8_CORE_IMPL_HPP
 
-#include "loop.hpp"
+#include "core.hpp"
 
 namespace chip8 {
 
-struct Loop::_Pimpl {
+struct Core::_Pimpl {
     State &state;
     word opcode{0};  //!< current opcode to decode
 
@@ -14,4 +14,4 @@ struct Loop::_Pimpl {
 
 }  // namespace chip8
 
-#endif  // CHIP8_LOOP_IMPL_HPP
+#endif  // CHIP8_CORE_IMPL_HPP

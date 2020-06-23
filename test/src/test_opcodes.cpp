@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <loop.hpp>
+#include <core.hpp>
 #include <opcode.hpp>
 
 #include "test_state.hpp"
@@ -13,7 +13,7 @@ namespace chip8 {
 
 TEST(OpCodesTest, MVI_decode) {
     NiceMock<StateMock> state;
-    Loop loop(state);
+    Core loop(state);
 
     EXPECT_CALL(state, fetch()).WillOnce(Return(0xA123));
     loop.fetch();
@@ -26,7 +26,7 @@ TEST(OpCodesTest, MVI_decode) {
 TEST(OpCodesTest, MVI_execute) {
     InSequence seq;
     NiceMock<StateMock> state;
-    Loop loop(state);
+    Core loop(state);
 
     EXPECT_CALL(state, fetch()).WillOnce(Return(0xA123));
     EXPECT_CALL(state, indexRegister(0x0123)).Times(1);
@@ -36,7 +36,7 @@ TEST(OpCodesTest, MVI_execute) {
 
 TEST(OpCodesTest, CALL_decode) {
     NiceMock<StateMock> state;
-    Loop loop(state);
+    Core loop(state);
 
     EXPECT_CALL(state, fetch()).WillOnce(Return(0x2123));
     loop.fetch();
@@ -49,7 +49,7 @@ TEST(OpCodesTest, CALL_decode) {
 TEST(OpCodesTest, CALL_execute) {
     InSequence seq;
     NiceMock<StateMock> state;
-    Loop loop(state);
+    Core loop(state);
 
     EXPECT_CALL(state, fetch()).WillOnce(Return(0x2123));
     EXPECT_CALL(state, pc()).WillOnce(Return(0x202));
