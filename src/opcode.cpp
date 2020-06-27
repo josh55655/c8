@@ -3,14 +3,14 @@
 
 #include <map>
 #include <memory>
-#include <sys/time.h>
+#include <vector>
 
-#include "opcode.hpp"
 #include "state.hpp"
 
 using std::make_unique;
 using std::map;
 using std::unique_ptr;
+using std::vector;
 
 namespace chip8 {
 
@@ -47,6 +47,7 @@ private:
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
         _codes[Opcode::JMPO_OPCODE] = make_unique<opcode::JMPO>();
         _codes[Opcode::RAND_OPCODE] = make_unique<opcode::RAND>();
+        _codes[Opcode::DRAW_OPCODE] = make_unique<opcode::DRAW>();
     }
 
     map<word, OpcodePtr> _codes;
@@ -147,6 +148,27 @@ void opcode::ROUTINE::apply(State &state, word _data) {
     } else {
         state.push(state.pc());
         state.pc(_data);
+    }
+}
+
+void opcode::DRAW::apply(State &state, word _data) {
+    byte r1 = getReg(_data, 0);
+    byte r2 = getReg(_data, 1);
+    byte h = (_data & 0x000F);
+    byte y = 0;
+
+    byte cx = state.v(r1), cy = state.v(r2);
+    auto sprite = state.read(state.indexRegister(), h);
+    while (y < h) {
+        byte x = 0;
+        vector<byte> row;
+        while (x < 8) {
+            byte p = sprite[y] & (0x80 >> x);
+            row.push_back(p);
+            state.v(0xf) = (state.video()[(cy + y) * CHIP8_COLS + cx + x] != p) ? 1 : 0;
+        }
+        state.video(row, (cy + y) * CHIP8_COLS + cx);
+        ++y;
     }
 }
 

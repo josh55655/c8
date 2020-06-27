@@ -74,6 +74,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class DRAW : public Opcode {
+public:
+    DRAW() : Opcode("draw", DRAW_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 class ROUTINE : public Opcode {
 public:
     ROUTINE() : Opcode(".routine", ROUTINES_OPCODE) {}

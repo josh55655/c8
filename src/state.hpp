@@ -30,6 +30,10 @@ public:
      * bytes long, we will need to fetch two successive bytes and merge them to get the actual opcode. */
     virtual word fetch();
 
+    virtual std::vector<byte> read(word address, word size) const;
+    virtual std::array<byte, CHIP8_COLS * CHIP8_ROWS> &video() const;
+    virtual void video(const std::vector<byte> &spriteMap, word address);
+
     virtual byte &v(byte index);
     virtual byte &v(byte index) const;
 

@@ -57,4 +57,16 @@ void State::clrscr() {
     _impl->videoChanged = true;
 }
 
+std::array<byte, CHIP8_COLS * CHIP8_ROWS> &State::video() const { return _impl->vMemory; }
+
+void State::video(const std::vector<byte> &spriteMap, word address) {
+    word cursor{address};
+    for (auto p : spriteMap) _impl->vMemory[cursor++] = p;
+    _impl->videoChanged = true;
+}
+
+std::vector<byte> State::read(word address, word size) const {
+    return std::vector<byte>(_impl->memory.begin() + address, _impl->memory.begin() + address + size);
+}
+
 }  // namespace chip8
