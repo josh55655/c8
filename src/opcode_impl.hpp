@@ -31,7 +31,7 @@ public:
 
 class CMP : public Opcode {
 public:
-    CMP() : Opcode("cmp", CMP_OPCODE) {}
+    CMP() : Opcode("cmp", REQ_OPCODE) {}
     void apply(State &state, word _data) override;
 };
 

@@ -39,7 +39,7 @@ private:
         _codes[Opcode::CALL_OPCODE] = make_unique<opcode::CALL>();
         _codes[Opcode::EQ_OPCODE] = make_unique<opcode::EQ>();
         _codes[Opcode::NEQ_OPCODE] = make_unique<opcode::NEQ>();
-        _codes[Opcode::CMP_OPCODE] = make_unique<opcode::CMP>();
+        _codes[Opcode::REQ_OPCODE] = make_unique<opcode::CMP>();
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
     }
 
