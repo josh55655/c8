@@ -40,6 +40,7 @@ private:
         _codes[Opcode::EQ_OPCODE] = make_unique<opcode::EQ>();
         _codes[Opcode::NEQ_OPCODE] = make_unique<opcode::NEQ>();
         _codes[Opcode::REQ_OPCODE] = make_unique<opcode::CMP>();
+        _codes[Opcode::SET_OPCODE] = make_unique<opcode::SET>();
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
     }
 
@@ -91,6 +92,11 @@ void opcode::CMP::apply(State &state, word _data) {
         // skip next instruction
         state.pc(state.pc() + State::OPCODE_BYTES);
     }
+}
+
+void opcode::SET::apply(State &state, word _data) {
+    byte r1 = (_data & 0x0F00) >> 8;
+    state.v(r1) = _data & 0x00FF;
 }
 
 }  // namespace chip8

@@ -197,4 +197,35 @@ TEST(OpCodesTest, CMP_execute) {
     ASSERT_EQ(0x23, v3);
 }
 
+TEST(OpCodesTest, SET_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x6120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ("set", op.nmemonic);
+    ASSERT_EQ(0x6000, op.code);
+}
+
+TEST(OpCodesTest, SET_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte datum{0};
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x6123));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x6712));
+    EXPECT_CALL(state, v(7)).WillOnce(ReturnRef(datum));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x23u, datum);
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x12u, datum);
+}
+
 }  // namespace chip8
