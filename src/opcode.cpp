@@ -45,6 +45,7 @@ private:
         _codes[Opcode::NREQ_OPCODE] = make_unique<opcode::NREQ>();
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
         _codes[Opcode::JMPO_OPCODE] = make_unique<opcode::JMPO>();
+        _codes[Opcode::RAND_OPCODE] = make_unique<opcode::RAND>();
     }
 
     map<word, OpcodePtr> _codes;
@@ -129,6 +130,12 @@ void opcode::JMPO::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
     state.pc(state.v(reg) + val);
+}
+
+void opcode::RAND::apply(State &state, word _data) {
+    byte reg = getReg(_data, 0);
+    byte val = getByte(_data);
+    state.v(reg) = val & state.rand();
 }
 
 }  // namespace chip8

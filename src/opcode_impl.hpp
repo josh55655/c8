@@ -68,6 +68,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class RAND : public Opcode {
+public:
+    RAND() : Opcode("rand", RAND_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 }  // namespace chip8::opcode
 
 #endif  // CHIP8_OPCODE_IMPL_HPP

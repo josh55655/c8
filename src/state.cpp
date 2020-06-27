@@ -12,7 +12,7 @@ using std::pair;
 
 namespace chip8 {
 
-State::State() : _impl{make_unique<_Pimpl>()} {}
+State::State() : _impl{make_unique<_Pimpl>()} { srand(word(time(0))); }
 
 State::~State() {}
 
@@ -41,6 +41,8 @@ void State::push(word datum) {
     _impl->stack[_impl->sp] = datum;
     ++_impl->sp;
 }
+
+byte State::rand() const { return (rand() % 255); }
 
 byte &State::v(byte index) { return _impl->v.at(index); }
 byte &State::v(byte index) const { return _impl->v.at(index); }

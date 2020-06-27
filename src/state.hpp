@@ -41,6 +41,8 @@ public:
 
     virtual void push(word datum);
 
+    virtual byte rand() const;
+
     friend class StateTest;
 };
 

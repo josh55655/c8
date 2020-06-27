@@ -17,6 +17,7 @@ public:
     MOCK_METHOD(void, push, (word), (override));
     MOCK_METHOD(byte &, v, (byte), (override));
     MOCK_METHOD(byte &, v, (byte), (const override));
+    MOCK_METHOD(byte, rand, (), (const override));
 };
 
 }  // namespace chip8
