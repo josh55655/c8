@@ -40,8 +40,11 @@ public:
     virtual void pc(word _pc);
 
     virtual void push(word datum);
+    virtual word pop();
 
     virtual byte rand() const;
+
+    virtual void clrscr();
 
     friend class StateTest;
 };

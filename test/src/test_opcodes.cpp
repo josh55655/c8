@@ -374,4 +374,55 @@ TEST(OpCodesTest, RAND_execute) {
     ASSERT_EQ(0x12, datum);
 }
 
+TEST(OpCodesTest, ROUTINES_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x0120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ(".routine", op.nmemonic);
+    ASSERT_EQ(0x0000, op.code);
+}
+
+TEST(OpCodesTest, ROUTINES_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x0120));
+    EXPECT_CALL(state, pc()).WillOnce(Return(0x202));
+    EXPECT_CALL(state, push(0x202)).Times(1);
+    EXPECT_CALL(state, pc(0x0120)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+}
+
+TEST(OpCodesTest, ROUTINES_CLRSCR_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x00E0));
+    EXPECT_CALL(state, clrscr()).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+}
+
+TEST(OpCodesTest, ROUTINES_RETURN_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x00EE));
+    EXPECT_CALL(state, pop()).WillOnce(Return(0x0202));
+    EXPECT_CALL(state, pc(0x0202)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+}
+
 }  // namespace chip8

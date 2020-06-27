@@ -15,11 +15,12 @@ struct State::_Pimpl {
     std::array<word, STACK_SIZE> stack;                 // function call stack
     std::array<byte, KEYPAD_SIZE> key;                  // keypad event mapper
 
-    word i;           // index register
-    word pc;          // program counter
-    word sp;          // stack pointer
-    byte delayTimer;  // timer register
-    byte soundTimer;  // sound timer register, when comes to 0, buzzer ring
+    word i;             // index register
+    word pc;            // program counter
+    word sp;            // stack pointer
+    byte delayTimer;    // timer register
+    byte soundTimer;    // sound timer register, when comes to 0, buzzer ring
+    bool videoChanged;  // when a video memory update occurs, this flags recorded the event
 };
 
 }  // namespace chip8

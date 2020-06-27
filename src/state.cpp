@@ -42,9 +42,19 @@ void State::push(word datum) {
     ++_impl->sp;
 }
 
+word State::pop() {
+    --_impl->sp;
+    return _impl->stack[_impl->sp];
+}
+
 byte State::rand() const { return (rand() % 255); }
 
 byte &State::v(byte index) { return _impl->v.at(index); }
 byte &State::v(byte index) const { return _impl->v.at(index); }
+
+void State::clrscr() {
+    _impl->vMemory.fill(0);
+    _impl->videoChanged = true;
+}
 
 }  // namespace chip8

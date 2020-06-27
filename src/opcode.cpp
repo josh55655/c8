@@ -35,6 +35,7 @@ public:
 
 private:
     OpCodeContainer() {
+        _codes[Opcode::ROUTINES_OPCODE] = make_unique<opcode::ROUTINE>();
         _codes[Opcode::JMP_OPCODE] = make_unique<opcode::JMP>();
         _codes[Opcode::CALL_OPCODE] = make_unique<opcode::CALL>();
         _codes[Opcode::EQ_OPCODE] = make_unique<opcode::EQ>();
@@ -136,6 +137,17 @@ void opcode::RAND::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
     state.v(reg) = val & state.rand();
+}
+
+void opcode::ROUTINE::apply(State &state, word _data) {
+    if (_data == 0x00EE) {
+        state.pc(state.pop());
+    } else if (_data == 0x00E0) {
+        state.clrscr();
+    } else {
+        state.push(state.pc());
+        state.pc(_data);
+    }
 }
 
 }  // namespace chip8
