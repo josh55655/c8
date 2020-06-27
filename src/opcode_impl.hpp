@@ -62,6 +62,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class JMPO : public Opcode {
+public:
+    JMPO() : Opcode("jmpo", JMPO_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 }  // namespace chip8::opcode
 
 #endif  // CHIP8_OPCODE_IMPL_HPP

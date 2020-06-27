@@ -308,4 +308,37 @@ TEST(OpCodesTest, NREQ_execute) {
     ASSERT_EQ(0x23, v3);
 }
 
+TEST(OpCodesTest, JMPO_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xB120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ("jmpo", op.nmemonic);
+    ASSERT_EQ(0xb000, op.code);
+}
+
+TEST(OpCodesTest, JMPO_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte datum{0x30};
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xB123));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, pc()).Times(0);
+    EXPECT_CALL(state, pc(0x0053)).Times(1);
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xB512));
+    EXPECT_CALL(state, v(5)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, pc()).Times(0);
+    EXPECT_CALL(state, pc(0x0042)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+    core.fetch();
+    core.execute(core.decode());
+}
+
 }  // namespace chip8
