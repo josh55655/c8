@@ -5,6 +5,9 @@
 
 namespace chip8::opcode {
 
+byte getReg(word data, byte r);
+byte getByte(word data);
+
 class JMP : public Opcode {
 public:
     JMP() : Opcode("jmp", JMP_OPCODE) {}
@@ -38,6 +41,12 @@ public:
 class SET : public Opcode {
 public:
     SET() : Opcode("set", SET_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
+class ADD : public Opcode {
+public:
+    ADD() : Opcode("add", ADD_OPCODE) {}
     void apply(State &state, word _data) override;
 };
 

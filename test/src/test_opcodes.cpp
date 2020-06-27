@@ -228,4 +228,43 @@ TEST(OpCodesTest, SET_execute) {
     ASSERT_EQ(0x12u, datum);
 }
 
+TEST(OpCodesTest, ADD_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x7120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ("add", op.nmemonic);
+    ASSERT_EQ(0x7000, op.code);
+}
+
+TEST(OpCodesTest, ADD_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte datum{0}, other{0};
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x7123));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x7712));
+    EXPECT_CALL(state, v(7)).WillOnce(ReturnRef(other));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x7112));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(datum));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x23u, datum);
+    ASSERT_EQ(0u, other);
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x23u, datum);
+    ASSERT_EQ(0x12u, other);
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x35u, datum);
+    ASSERT_EQ(0x12u, other);
+}
+
 }  // namespace chip8
