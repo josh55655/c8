@@ -42,6 +42,7 @@ private:
         _codes[Opcode::REQ_OPCODE] = make_unique<opcode::CMP>();
         _codes[Opcode::SET_OPCODE] = make_unique<opcode::SET>();
         _codes[Opcode::ADD_OPCODE] = make_unique<opcode::ADD>();
+        _codes[Opcode::NREQ_OPCODE] = make_unique<opcode::NREQ>();
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
     }
 
@@ -50,17 +51,13 @@ private:
 
 }  // namespace
 
-namespace opcode {
-
-byte getReg(word _data, byte r) {
+byte opcode::getReg(word _data, byte r) {
     if (r == 0) return (_data & 0x0F00) >> 8;
 
     return (_data & 0x00F0) >> 4;
 }
 
-byte getByte(word data) { return data & 0x00FF; }
-
-}  // namespace opcode
+byte opcode::getByte(word data) { return data & 0x00FF; }
 
 Opcode &makeOpcode(word opcode) {
     word code = opcode & 0xF000;
@@ -116,6 +113,15 @@ void opcode::ADD::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
     state.v(reg) += val;
+}
+
+void opcode::NREQ::apply(State &state, word _data) {
+    byte r1 = getReg(_data, 0);
+    byte r2 = getReg(_data, 1);
+    if (state.v(r1) != state.v(r2)) {
+        // skip next instruction
+        state.pc(state.pc() + State::OPCODE_BYTES);
+    }
 }
 
 }  // namespace chip8

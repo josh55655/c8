@@ -50,6 +50,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class NREQ : public Opcode {
+public:
+    NREQ() : Opcode("nreq", NREQ_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 class MVI : public Opcode {
 public:
     MVI() : Opcode("mvi", MVI_OPCODE) {}
