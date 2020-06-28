@@ -188,6 +188,28 @@ void opcode::JKEY::apply(State &state, word _data) {
 
 void opcode::FUNC::apply(State &state, word _data) {}
 
-void opcode::VREG::apply(State &state, word _data) {}
+void opcode::VREG::apply(State &state, word _data) {
+    byte r1 = getReg(_data, 0);
+    byte r2 = getReg(_data, 1);
+    byte h = (_data & 0x000F);
+
+    switch (h) {
+    case 0:
+        state.v(r1) = state.v(r2);
+        break;
+    case 1:
+        state.v(r1) |= state.v(r2);
+        break;
+    case 2:
+        state.v(r1) &= state.v(r2);
+        break;
+    case 3:
+        state.v(r1) ^= state.v(r2);
+        break;
+
+    default:
+        break;
+    }
+}
 
 }  // namespace chip8
