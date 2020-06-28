@@ -80,6 +80,12 @@ public:
     void apply(State &state, word _data) override;
 };
 
+class JKEY : public Opcode {
+public:
+    JKEY() : Opcode("jkey", JKEY_OPCODE) {}
+    void apply(State &state, word _data) override;
+};
+
 class ROUTINE : public Opcode {
 public:
     ROUTINE() : Opcode(".routine", ROUTINES_OPCODE) {}

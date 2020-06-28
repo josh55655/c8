@@ -443,6 +443,56 @@ TEST(OpCodesTest, RAND_execute) {
     ASSERT_EQ(0x12, datum);
 }
 
+TEST(OpCodesTest, JKEY_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xE120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ("jkey", op.nmemonic);
+    ASSERT_EQ(0xe000, op.code);
+}
+
+TEST(OpCodesTest, JKEY_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte datum{0x12};
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xE19E));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, keyPressed(0x12)).WillOnce(Return(false));
+    EXPECT_CALL(state, pc(_)).Times(0);
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xE5A1));
+    EXPECT_CALL(state, v(5)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, keyPressed(0x13)).WillOnce(Return(true));
+    EXPECT_CALL(state, pc(_)).Times(0);
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xE19E));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, keyPressed(0x14)).WillOnce(Return(true));
+    EXPECT_CALL(state, pc()).WillOnce(Return(0x200));
+    EXPECT_CALL(state, pc(0x202)).Times(1);
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xE5A1));
+    EXPECT_CALL(state, v(5)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, keyPressed(0x15)).WillOnce(Return(false));
+    EXPECT_CALL(state, pc()).WillOnce(Return(0x200));
+    EXPECT_CALL(state, pc(0x202)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+    datum = 0x13;
+    core.fetch();
+    core.execute(core.decode());
+    datum = 0x14;
+    core.fetch();
+    core.execute(core.decode());
+    datum = 0x15;
+    core.fetch();
+    core.execute(core.decode());
+}
+
 TEST(OpCodesTest, ROUTINES_decode) {
     NiceMock<StateMock> state;
     Core core(state);

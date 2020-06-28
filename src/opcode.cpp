@@ -48,6 +48,7 @@ private:
         _codes[Opcode::JMPO_OPCODE] = make_unique<opcode::JMPO>();
         _codes[Opcode::RAND_OPCODE] = make_unique<opcode::RAND>();
         _codes[Opcode::DRAW_OPCODE] = make_unique<opcode::DRAW>();
+        _codes[Opcode::JKEY_OPCODE] = make_unique<opcode::JKEY>();
     }
 
     map<word, OpcodePtr> _codes;
@@ -169,6 +170,17 @@ void opcode::DRAW::apply(State &state, word _data) {
         }
         state.video(row, (cy + y) * CHIP8_COLS + cx);
         ++y;
+    }
+}
+
+void opcode::JKEY::apply(State &state, word _data) {
+    byte reg = getReg(_data, 0);
+    byte val = getByte(_data);
+
+    if (val == 0x9e) {
+        if (state.keyPressed(state.v(reg))) state.pc(state.pc() + state.OPCODE_BYTES);
+    } else if (val == 0xa1) {
+        if (!state.keyPressed(state.v(reg))) state.pc(state.pc() + state.OPCODE_BYTES);
     }
 }
 

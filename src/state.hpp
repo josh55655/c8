@@ -16,6 +16,9 @@ class State {
     std::unique_ptr<_Pimpl> _impl;
 
 public:
+    using VideoMemory = std::array<byte, CHIP8_COLS * CHIP8_ROWS>;
+    using KeyPad = std::array<bool, KEYPAD_SIZE>;
+
     static constexpr word CODE_ADDRESS{0x200};
     static constexpr word OPCODE_BYTES{2};
 
@@ -31,8 +34,12 @@ public:
     virtual word fetch();
 
     virtual std::vector<byte> read(word address, word size) const;
-    virtual std::array<byte, CHIP8_COLS * CHIP8_ROWS> &video() const;
+
+    virtual VideoMemory &video() const;
     virtual void video(const std::vector<byte> &spriteMap, word address);
+
+    virtual bool keyPressed(byte key) const;
+    virtual void keyPressed(byte key, bool pressed);
 
     virtual byte &v(byte index);
     virtual byte &v(byte index) const;
