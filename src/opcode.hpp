@@ -66,7 +66,7 @@ public:
     };
 
     explicit Opcode(const std::string nmemonic, word code);
-    virtual ~Opcode() {}
+    virtual ~Opcode() = default;
 
     virtual void apply(State &state, word _data) = 0;
     void operator()(State &state, word _data);

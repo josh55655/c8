@@ -544,4 +544,28 @@ TEST(OpCodesTest, ROUTINES_RETURN_execute) {
     core.execute(core.decode());
 }
 
+TEST(OpCodesTest, FUNC_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ(".func", op.nmemonic);
+    ASSERT_EQ(0xf000, op.code);
+}
+
+TEST(OpCodesTest, VREG_decode) {
+    NiceMock<StateMock> state;
+    Core core(state);
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8120));
+    core.fetch();
+    auto [op, data] = core.decode();
+    ASSERT_EQ(0x0120, data);
+    ASSERT_EQ(".vreg", op.nmemonic);
+    ASSERT_EQ(0x8000, op.code);
+}
+
 }  // namespace chip8

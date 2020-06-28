@@ -43,12 +43,14 @@ private:
         _codes[Opcode::REQ_OPCODE] = make_unique<opcode::CMP>();
         _codes[Opcode::SET_OPCODE] = make_unique<opcode::SET>();
         _codes[Opcode::ADD_OPCODE] = make_unique<opcode::ADD>();
+        _codes[Opcode::VREG_OPCODE] = make_unique<opcode::VREG>();
         _codes[Opcode::NREQ_OPCODE] = make_unique<opcode::NREQ>();
         _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
         _codes[Opcode::JMPO_OPCODE] = make_unique<opcode::JMPO>();
         _codes[Opcode::RAND_OPCODE] = make_unique<opcode::RAND>();
         _codes[Opcode::DRAW_OPCODE] = make_unique<opcode::DRAW>();
         _codes[Opcode::JKEY_OPCODE] = make_unique<opcode::JKEY>();
+        _codes[Opcode::FUNC_OPCODE] = make_unique<opcode::FUNC>();
     }
 
     map<word, OpcodePtr> _codes;
@@ -183,5 +185,9 @@ void opcode::JKEY::apply(State &state, word _data) {
         if (!state.keyPressed(state.v(reg))) state.pc(state.pc() + state.OPCODE_BYTES);
     }
 }
+
+void opcode::FUNC::apply(State &state, word _data) {}
+
+void opcode::VREG::apply(State &state, word _data) {}
 
 }  // namespace chip8
