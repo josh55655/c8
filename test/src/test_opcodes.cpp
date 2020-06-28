@@ -628,4 +628,33 @@ TEST(OpCodesTest, VREG_XOR_execute) {
     ASSERT_EQ(0x3, v1);
 }
 
+TEST(OpCodesTest, VREG_ADD_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5, v2 = 6, vf = 23;
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8124));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(v2));
+    EXPECT_CALL(state, v(0xf)).WillOnce(ReturnRef(vf));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8124));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(v2));
+    EXPECT_CALL(state, v(0xf)).WillOnce(ReturnRef(vf));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(11, v1);
+    ASSERT_EQ(0, vf);
+    v1 = 160;
+    v2 = 100;
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(4, v1);
+    ASSERT_EQ(1, vf);
+}
+
 }  // namespace chip8

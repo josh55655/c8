@@ -192,6 +192,7 @@ void opcode::VREG::apply(State &state, word _data) {
     byte r1 = getReg(_data, 0);
     byte r2 = getReg(_data, 1);
     byte h = (_data & 0x000F);
+    word ris = 0;
 
     switch (h) {
     case 0:
@@ -205,6 +206,11 @@ void opcode::VREG::apply(State &state, word _data) {
         break;
     case 3:
         state.v(r1) ^= state.v(r2);
+        break;
+    case 4:
+        ris = state.v(r1) + state.v(r2);
+        state.v(0xf) = (ris & 0xff00) ? 1 : 0;
+        state.v(r1) = 0x00ff & ris;
         break;
 
     default:
