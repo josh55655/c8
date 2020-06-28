@@ -556,6 +556,89 @@ TEST(OpCodesTest, FUNC_decode) {
     ASSERT_EQ(0xf000, op.code);
 }
 
+TEST(OpCodesTest, FUNC_RTMR_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5;
+    byte delayTimer = 100;
+
+    ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
+    ON_CALL(state, delayTimer()).WillByDefault(ReturnRef(delayTimer));
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF107));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF107));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(100, v1);
+    delayTimer = 50;
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(50, v1);
+}
+
+TEST(OpCodesTest, FUNC_STMR_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5;
+
+    ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF115));
+    EXPECT_CALL(state, delayTimer(5)).Times(1);
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF115));
+    EXPECT_CALL(state, delayTimer(50)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+    v1 = 50;
+    core.fetch();
+    core.execute(core.decode());
+}
+
+TEST(OpCodesTest, FUNC_SSTMR_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5;
+
+    ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF118));
+    EXPECT_CALL(state, soundTimer(5)).Times(1);
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF118));
+    EXPECT_CALL(state, soundTimer(50)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+    v1 = 50;
+    core.fetch();
+    core.execute(core.decode());
+}
+
+TEST(OpCodesTest, FUNC_ADDI_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5;
+
+    ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
+    ON_CALL(state, indexRegister()).WillByDefault(Return(100));
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF11E));
+    EXPECT_CALL(state, indexRegister(105)).Times(1);
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xF11E));
+    EXPECT_CALL(state, indexRegister(150)).Times(1);
+
+    core.fetch();
+    core.execute(core.decode());
+    v1 = 50;
+    core.fetch();
+    core.execute(core.decode());
+}
+
 TEST(OpCodesTest, VREG_decode) {
     NiceMock<StateMock> state;
     Core core(state);

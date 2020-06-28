@@ -57,6 +57,12 @@ public:
 
     virtual void clrscr();
 
+    virtual byte &delayTimer() const;
+    virtual void delayTimer(byte tmr);
+
+    virtual byte &soundTimer() const;
+    virtual void soundTimer(byte tmr);
+
     friend class StateTest;
 };
 

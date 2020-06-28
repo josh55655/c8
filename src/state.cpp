@@ -73,4 +73,10 @@ bool State::keyPressed(byte key) const { return _impl->key.at(key); }
 
 void State::keyPressed(byte key, bool pressed) { _impl->key.at(key) = pressed; }
 
+byte &State::delayTimer() const { return _impl->delayTimer; }
+void State::delayTimer(byte tmr) { _impl->delayTimer = tmr; }
+
+byte &State::soundTimer() const { return _impl->soundTimer; }
+void State::soundTimer(byte tmr) { _impl->soundTimer = tmr; }
+
 }  // namespace chip8

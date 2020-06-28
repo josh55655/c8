@@ -25,6 +25,10 @@ public:
     MOCK_METHOD(bool, keyPressed, (byte), (const override));
     MOCK_METHOD(byte, rand, (), (const override));
     MOCK_METHOD(void, clrscr, (), (override));
+    MOCK_METHOD(void, delayTimer, (byte), (override));
+    MOCK_METHOD(byte &, delayTimer, (), (const override));
+    MOCK_METHOD(void, soundTimer, (byte), (override));
+    MOCK_METHOD(byte &, soundTimer, (), (const override));
 };
 
 }  // namespace chip8

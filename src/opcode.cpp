@@ -186,7 +186,25 @@ void opcode::JKEY::apply(State &state, word _data) {
     }
 }
 
-void opcode::FUNC::apply(State &state, word _data) {}
+void opcode::FUNC::apply(State &state, word _data) {
+    byte reg = getReg(_data, 0);
+    byte val = getByte(_data);
+
+    if (val == 0x07) {
+        state.v(reg) = state.delayTimer();
+    } else if (val == 0x0A) {
+    } else if (val == 0x15) {
+        state.delayTimer(state.v(reg));
+    } else if (val == 0x18) {
+        state.soundTimer(state.v(reg));
+    } else if (val == 0x1E) {
+        state.indexRegister(state.indexRegister() + state.v(reg));
+    } else if (val == 0x29) {
+    } else if (val == 0x33) {
+    } else if (val == 0x55) {
+    } else if (val == 0x65) {
+    }
+}
 
 void opcode::VREG::apply(State &state, word _data) {
     byte r1 = getReg(_data, 0);
