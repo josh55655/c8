@@ -212,6 +212,22 @@ void opcode::VREG::apply(State &state, word _data) {
         state.v(0xf) = (ris & 0xff00) ? 1 : 0;
         state.v(r1) = 0x00ff & ris;
         break;
+    case 5:
+        state.v(0xf) = (state.v(r1) > state.v(r2)) ? 1 : 0;
+        state.v(r1) -= state.v(r2);
+        break;
+    case 6:
+        state.v(0xf) = state.v(r1) & 0x01;
+        state.v(r1) >>= 1;
+        break;
+    case 7:
+        state.v(0xf) = (state.v(r1) < state.v(r2)) ? 1 : 0;
+        state.v(r1) = state.v(r2) - state.v(r1);
+        break;
+    case 8:
+        state.v(0xf) = (state.v(r1) & 0x80) >> 7;
+        state.v(r1) <<= 1;
+        break;
 
     default:
         break;

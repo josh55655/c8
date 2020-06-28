@@ -657,4 +657,108 @@ TEST(OpCodesTest, VREG_ADD_execute) {
     ASSERT_EQ(1, vf);
 }
 
+TEST(OpCodesTest, VREG_SUB_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5, v2 = 6, vf = 23;
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8125));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(v2));
+    EXPECT_CALL(state, v(0xf)).WillOnce(ReturnRef(vf));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(v2));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8125));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(v2));
+    EXPECT_CALL(state, v(0xf)).WillOnce(ReturnRef(vf));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(v2));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(v1));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0xff, v1);
+    ASSERT_EQ(0, vf);
+    v1 = 160;
+    v2 = 100;
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(60, v1);
+    ASSERT_EQ(1, vf);
+}
+
+TEST(OpCodesTest, VREG_RSH_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5, v2 = 6, vf = 23;
+
+    ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
+    ON_CALL(state, v(0xf)).WillByDefault(ReturnRef(vf));
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8126));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8126));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(2, v1);
+    ASSERT_EQ(1, vf);
+    v1 = 0xfe;
+    v2 = 100;
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x7f, v1);
+    ASSERT_EQ(0, vf);
+}
+
+TEST(OpCodesTest, VREG_SUBY_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5, v2 = 6, vf = 23;
+
+    ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
+    ON_CALL(state, v(2)).WillByDefault(ReturnRef(v2));
+    ON_CALL(state, v(0xf)).WillByDefault(ReturnRef(vf));
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8127));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8127));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x1, v1);
+    ASSERT_EQ(1, vf);
+    v1 = 160;
+    v2 = 100;
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(196, v1);
+    ASSERT_EQ(0, vf);
+}
+
+TEST(OpCodesTest, VREG_LSH_execute) {
+    InSequence seq;
+    NiceMock<StateMock> state;
+    Core core(state);
+    byte v1 = 5, v2 = 6, vf = 23;
+
+    ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
+    ON_CALL(state, v(0xf)).WillByDefault(ReturnRef(vf));
+
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8128));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8128));
+
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0x0A, v1);
+    ASSERT_EQ(0, vf);
+    v1 = 0xfe;
+    v2 = 100;
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0xfc, v1);
+    ASSERT_EQ(1, vf);
+}
+
 }  // namespace chip8
