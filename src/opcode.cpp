@@ -157,15 +157,15 @@ void opcode::DRAW::apply(State &state, word _data) {
     byte h = (_data & 0x000F);
     byte y = 0;
 
+    auto vMemory = state.video();
     byte cx = state.v(r1), cy = state.v(r2);
     auto sprite = state.read(state.indexRegister(), h);
     while (y < h) {
-        byte x = 0;
         vector<byte> row;
-        while (x < 8) {
+        for (byte x = 0; x < 8; ++x) {
             byte p = sprite[y] & (0x80 >> x);
-            row.push_back(p);
-            state.v(0xf) = (state.video()[(cy + y) * CHIP8_COLS + cx + x] != p) ? 1 : 0;
+            row.push_back((p > 0) ? 1 : 0);
+            if ((vMemory[(cy + y) * CHIP8_COLS + cx + x] != p)) state.v(0xf) = 1;
         }
         state.video(row, (cy + y) * CHIP8_COLS + cx);
         ++y;

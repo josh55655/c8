@@ -369,44 +369,36 @@ TEST(OpCodesTest, DRAW_execute) {
     array<byte, CHIP8_COLS * CHIP8_ROWS> display{0};
 
     EXPECT_CALL(state, fetch()).WillOnce(Return(0xD123));
+    EXPECT_CALL(state, video()).WillOnce(ReturnRef(display));
     EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(xCord));
     EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(yCord));
     EXPECT_CALL(state, indexRegister()).WillOnce(Return(0x30));
     EXPECT_CALL(state, read(0x30, 3)).WillOnce(Return(vector<byte>({1, 2, 3})));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video()).Times(1).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
 
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 0, 1}), 0x0));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 0}), 0x40)).Times(1);
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 1}), 0x80)).Times(1);
+
     EXPECT_CALL(state, fetch()).WillOnce(Return(0xD123));
-    EXPECT_CALL(state, indexRegister()).WillOnce(Return(0x30));
+    EXPECT_CALL(state, video()).WillOnce(ReturnRef(display));
     EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(xCord));
     EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(yCord));
+    EXPECT_CALL(state, indexRegister()).WillOnce(Return(0x30));
     EXPECT_CALL(state, read(0x30, 3)).WillOnce(Return(vector<byte>({1, 2, 3})));
-    EXPECT_CALL(state, video()).Times(24).WillRepeatedly(ReturnRef(display));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 0, 1}), 0x4A));
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 0}), 0x8A)).Times(1);
-    EXPECT_CALL(state, v(0xf)).Times(1).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 1}), 0xBA)).Times(1);
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 1}), 0xCA)).Times(1);
 
     core.fetch();
     core.execute(core.decode());
