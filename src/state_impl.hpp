@@ -15,7 +15,6 @@ struct State::_Pimpl {
     std::array<byte, V_REG_NUM> v;         // general purpose registers
     std::array<word, STACK_SIZE> stack;    // function call stack
     State::KeyPad key;                     // keypad event mapper
-    KeyboardInterface &keyboard;           // keyboard interface
 
     word i;             // index register
     word pc;            // program counter
@@ -23,9 +22,8 @@ struct State::_Pimpl {
     byte delayTimer;    // timer register
     byte soundTimer;    // sound timer register, when comes to 0, buzzer ring
     bool videoChanged;  // when a video memory update occurs, this flags recorded the event
+    byte keyPressed;    // last key pressed;
     std::array<size_t, 16> _spritesAddresses;
-
-    _Pimpl(KeyboardInterface &_k) : keyboard(_k) {}
 };
 
 }  // namespace chip8

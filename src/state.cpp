@@ -14,13 +14,7 @@ using std::vector;
 
 namespace chip8 {
 
-State::State() {
-    static NoKeyboard __NO_KEYBOARD = NoKeyboard(*this);
-
-    _impl = make_unique<_Pimpl>(__NO_KEYBOARD);
-}
-
-State::State(KeyboardInterface &_keyboard) : _impl{make_unique<_Pimpl>(_keyboard)} { srand(word(time(0))); }
+State::State() : _impl{make_unique<_Pimpl>()} { srand(word(time(0))); }
 
 State::~State() {}
 
@@ -79,11 +73,22 @@ vector<byte> State::read(word address, word size) const {
     return vector<byte>(_impl->memory.begin() + address, _impl->memory.begin() + address + size);
 }
 
-void State::readKey(byte reg) { v(reg) = _impl->keyboard.getKey(); }
+void State::readKey(byte reg) {
+    if (_impl->keyPressed < 0xff) {
+        v(reg) = _impl->keyPressed;
+    } else {
+        pc(pc() - 1);
+    }
+}
 
 bool State::keyPressed(byte key) const { return _impl->key.at(key); }
 
-void State::keyPressed(byte key, bool pressed) { _impl->key.at(key) = pressed; }
+void State::keyPressed(byte key, bool pressed) {
+    _impl->key.at(key) = pressed;
+    if (pressed) _impl->keyPressed = key;
+}
+
+void State::noKeyPressed() { _impl->keyPressed = 0xff; }
 
 byte &State::delayTimer() const { return _impl->delayTimer; }
 void State::delayTimer(byte tmr) { _impl->delayTimer = tmr; }
