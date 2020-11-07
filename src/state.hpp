@@ -33,6 +33,7 @@ public:
      * bytes long, we will need to fetch two successive bytes and merge them to get the actual opcode. */
     virtual word fetch();
 
+    virtual void write(std::vector<byte> data, word address);
     virtual std::vector<byte> read(word address, word size) const;
 
     virtual VideoMemory &video() const;
@@ -63,8 +64,12 @@ public:
     virtual byte &soundTimer() const;
     virtual void soundTimer(byte tmr);
 
+    virtual std::size_t sprite(byte index) const;
+    virtual void storeBCD(byte value);
+
     friend class StateTest;
 };
 
 }  // namespace chip8
+
 #endif  // CHIP8_STATE_HPP

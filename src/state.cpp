@@ -5,10 +5,13 @@
 #include <memory>
 
 #include "opcode.hpp"
+#include "keyboard.hpp"
+#include "timer.h"
 
 using std::copy;
 using std::make_unique;
 using std::pair;
+using std::vector;
 
 namespace chip8 {
 
@@ -65,8 +68,10 @@ void State::video(const std::vector<byte> &spriteMap, word address) {
     _impl->videoChanged = true;
 }
 
-std::vector<byte> State::read(word address, word size) const {
-    return std::vector<byte>(_impl->memory.begin() + address, _impl->memory.begin() + address + size);
+void State::write(vector<byte> data, word address) { copy(data.begin(), data.end(), _impl->memory.begin() + address); }
+
+vector<byte> State::read(word address, word size) const {
+    return vector<byte>(_impl->memory.begin() + address, _impl->memory.begin() + address + size);
 }
 
 bool State::keyPressed(byte key) const { return _impl->key.at(key); }
@@ -78,5 +83,15 @@ void State::delayTimer(byte tmr) { _impl->delayTimer = tmr; }
 
 byte &State::soundTimer() const { return _impl->soundTimer; }
 void State::soundTimer(byte tmr) { _impl->soundTimer = tmr; }
+
+std::size_t State::sprite(byte index) const { return _impl->_spritesAddresses.at(index); }
+
+void State::storeBCD(byte value) {
+    byte h = value / 100;
+    byte d = (value - h * 100) / 10;
+    byte u = (value - d * 10 - h * 100);
+
+    write({h, d, u}, indexRegister());
+}
 
 }  // namespace chip8

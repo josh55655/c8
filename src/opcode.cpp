@@ -200,9 +200,16 @@ void opcode::FUNC::apply(State &state, word _data) {
     } else if (val == 0x1E) {
         state.indexRegister(state.indexRegister() + state.v(reg));
     } else if (val == 0x29) {
+        state.indexRegister(state.sprite(state.v(reg)));
     } else if (val == 0x33) {
+        state.storeBCD(state.v(reg));
     } else if (val == 0x55) {
+        vector<byte> data;
+        for (byte i = 0; i < reg; ++i) data.push_back(state.v(i));
+        state.write(data, state.indexRegister());
     } else if (val == 0x65) {
+        vector<byte> data = state.read(state.indexRegister(), reg);
+        for (byte i = 0; i < reg; ++i) state.v(i) = data[i];
     }
 }
 
