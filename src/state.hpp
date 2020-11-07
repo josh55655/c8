@@ -6,6 +6,7 @@
 #include <tuple>
 
 #include "defines.hpp"
+#include "keyboard.hpp"
 
 namespace chip8 {
 
@@ -23,6 +24,7 @@ public:
     static constexpr word OPCODE_BYTES{2};
 
     State();
+    State(KeyboardInterface &_keyboard);
     virtual ~State();
 
     void load(const std::vector<byte> &program, word address = CODE_ADDRESS);
@@ -39,6 +41,7 @@ public:
     virtual VideoMemory &video() const;
     virtual void video(const std::vector<byte> &spriteMap, word address);
 
+    virtual void readKey(byte reg);
     virtual bool keyPressed(byte key) const;
     virtual void keyPressed(byte key, bool pressed);
 

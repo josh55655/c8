@@ -193,6 +193,7 @@ void opcode::FUNC::apply(State &state, word _data) {
     if (val == 0x07) {
         state.v(reg) = state.delayTimer();
     } else if (val == 0x0A) {
+        state.readKey(reg);
     } else if (val == 0x15) {
         state.delayTimer(state.v(reg));
     } else if (val == 0x18) {

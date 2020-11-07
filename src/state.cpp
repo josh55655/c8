@@ -6,7 +6,6 @@
 
 #include "opcode.hpp"
 #include "keyboard.hpp"
-#include "timer.h"
 
 using std::copy;
 using std::make_unique;
@@ -15,7 +14,13 @@ using std::vector;
 
 namespace chip8 {
 
-State::State() : _impl{make_unique<_Pimpl>()} { srand(word(time(0))); }
+State::State() {
+    static NoKeyboard __NO_KEYBOARD = NoKeyboard(*this);
+
+    _impl = make_unique<_Pimpl>(__NO_KEYBOARD);
+}
+
+State::State(KeyboardInterface &_keyboard) : _impl{make_unique<_Pimpl>(_keyboard)} { srand(word(time(0))); }
 
 State::~State() {}
 
@@ -73,6 +78,8 @@ void State::write(vector<byte> data, word address) { copy(data.begin(), data.end
 vector<byte> State::read(word address, word size) const {
     return vector<byte>(_impl->memory.begin() + address, _impl->memory.begin() + address + size);
 }
+
+void State::readKey(byte reg) { v(reg) = _impl->keyboard.getKey(); }
 
 bool State::keyPressed(byte key) const { return _impl->key.at(key); }
 

@@ -6,11 +6,11 @@ option(WITH_TEST "Enable test module" ON)
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(c8support
-            src/interpreter.cpp
-            src/state.cpp src/opcode.hpp src/opcode.cpp src/opcode_impl.hpp src/core.cpp)
+        src/interpreter.cpp
+        src/state.cpp src/opcode.hpp src/opcode.cpp src/opcode_impl.hpp src/core.cpp src/keyboard.cpp)
 
 add_executable(chip8
-               src/main.cpp)
+        src/main.cpp)
 
 target_link_libraries(chip8 c8support)
 
