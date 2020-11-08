@@ -67,6 +67,12 @@ void State::video(const std::vector<byte> &spriteMap, word address) {
     _impl->videoChanged = true;
 }
 
+bool State::videoChanged() const { return _impl->videoChanged; }
+
+void State::tick() {
+    // update timers;
+}
+
 void State::write(vector<byte> data, word address) { copy(data.begin(), data.end(), _impl->memory.begin() + address); }
 
 vector<byte> State::read(word address, word size) const {

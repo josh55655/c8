@@ -163,6 +163,7 @@ void opcode::DRAW::apply(State &state, word _data) {
     auto vMemory = state.video();
     byte cx = state.v(r1), cy = state.v(r2);
     auto sprite = state.read(state.indexRegister(), h);
+    if (state.v(0x0f)) state.video().fill(0);
     while (y < h) {
         vector<byte> row;
         for (byte x = 0; x < 8; ++x) {
@@ -206,11 +207,15 @@ void opcode::FUNC::apply(State &state, word _data) {
         state.storeBCD(state.v(reg));
     } else if (val == 0x55) {
         vector<byte> data;
-        for (byte i = 0; i < reg; ++i) data.push_back(state.v(i));
+        byte i = 0;
+        for (; i <= reg; ++i) data.push_back(state.v(i));
         state.write(data, state.indexRegister());
+        state.indexRegister(state.indexRegister() + i + 1);
     } else if (val == 0x65) {
-        vector<byte> data = state.read(state.indexRegister(), reg);
-        for (byte i = 0; i < reg; ++i) state.v(i) = data[i];
+        vector<byte> data = state.read(state.indexRegister(), reg + 1);
+        byte i = 0;
+        for (; i <= reg; ++i) state.v(i) = data[i];
+        state.indexRegister(state.indexRegister() + i + 1);
     }
 }
 

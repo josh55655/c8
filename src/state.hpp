@@ -39,6 +39,7 @@ public:
 
     virtual VideoMemory &video() const;
     virtual void video(const std::vector<byte> &spriteMap, word address);
+    virtual bool videoChanged() const;
 
     virtual void readKey(byte reg);
     virtual bool keyPressed(byte key) const;
@@ -69,6 +70,8 @@ public:
 
     virtual std::size_t sprite(byte index) const;
     virtual void storeBCD(byte value);
+
+    virtual void tick();
 
     friend class StateTest;
 };

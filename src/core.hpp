@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <tuple>
+#include <vector>
 
 #include "defines.hpp"
 
@@ -32,6 +33,8 @@ public:
     /** execude a decoded operation. */
     void execute(DecodedOperation &op);
     void execute(DecodedOperation &&op);
+
+    static const std::vector<std::vector<byte>> FONT_SET;
 };
 
 }  // namespace chip8

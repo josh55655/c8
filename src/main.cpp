@@ -4,8 +4,8 @@
 
 using namespace chip8;
 
-int main() {
-    Interpreter i{std::cout};
+int main(int argc, char *argv[]) {
+    Interpreter i{std::cout, std::cin};
 
     i.init();
     i.load();
