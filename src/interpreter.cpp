@@ -68,8 +68,8 @@ void Interpreter::runOne() {
     auto op = _core.decode();
     _out << "\x1B[1;1H"
          << "\x1B[2K";
-    _out << "Read " << pc << " opcode: " << op.first.nmemonic << " 0x" << setw(4) << setfill('0') << hex << op.second
-         << dec << setfill(' ') << endl;
+    _out << "Read PC: 0x" << setw(4) << setfill('0') << hex << pc << " opcode: " << op.first.nmemonic << " 0x"
+         << setw(4) << op.second << dec << setfill(' ') << endl;
     _core.execute(std::move(op));
 }
 
