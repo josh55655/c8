@@ -3,8 +3,6 @@
 #include <chrono>
 #include <iostream>
 #include <vector>
-#include <thread>
-#include <sstream>
 #include <string>
 #include <iomanip>
 
@@ -25,11 +23,12 @@ using namespace std::chrono_literals;
 
 namespace chip8 {
 
-Interpreter::Interpreter(std::ostream &_out, std::istream &_in) : _out(_out), _in(_in), _core(_state) {}
+Interpreter::Interpreter(std::unique_ptr<IOHandler> &&_io) : _core(_state), _io(std::move(_io)) {}
 
 void Interpreter::init() {
     word nextAddress{0};
-    _out << "CHIP8 Interpreter starting..." << endl;
+    _io->log("CHIP8 Interpreter starting...");
+
     _state.pc(State::CODE_ADDRESS);
     _state.clrscr();
 
@@ -42,17 +41,15 @@ void Interpreter::init() {
 }
 
 void Interpreter::load() {
-    vector<byte> program;
-    while (_in) {
-        char b;
-        _in.get(b);
-        program.push_back(b);
-    }
-    _out << "CHIP8 Program read." << endl;
+    _io->log("Loading...");
+    auto program = _io->load();
     _state.load(program);
-    _out << "CHIP8 Program loaded." << endl;
-    _out << "\x1B[2J"
-         << "\x1B[1;1H";
+    _io->log("CHIP8 Program loaded.");
+}
+
+void Interpreter::start() {
+    __started = true;
+    _io->initScreen();
 }
 
 void Interpreter::checkTime() {
@@ -63,28 +60,18 @@ void Interpreter::checkTime() {
 }
 
 void Interpreter::runOne() {
+    if (!__started) throw std::logic_error("Interpreter not STARTED!");
+
     auto pc = _state.pc();
     _core.fetch();
     auto op = _core.decode();
-    _out << "\x1B[1;1H"
-         << "\x1B[2K";
-    _out << "Read PC: 0x" << setw(4) << setfill('0') << hex << pc << " opcode: " << op.first.nmemonic << " 0x"
-         << setw(4) << op.second << dec << setfill(' ') << endl;
+    _io->log(pc, op);
     _core.execute(std::move(op));
 }
 
 void Interpreter::updateVideo() {
     if (!_state.videoChanged()) return;
-
-    stringstream ss;
-    auto &v = _state.video();
-    for (int i = 0; i < CHIP8_ROWS; ++i) {
-        for (int j = 0; j < CHIP8_COLS; ++j) {
-            ss << (v[i * CHIP8_COLS + j] ? "#" : " ");
-        }
-        ss << endl;
-    }
-    _out << ss.str() << endl;
+    _io->draw(_state);
 }
 
 void Interpreter::updateKeyboard() {}

@@ -5,6 +5,7 @@
 #include <chrono>
 
 #include "core.hpp"
+#include "io_handler.hpp"
 #include "state.hpp"
 
 namespace chip8 {
@@ -16,20 +17,22 @@ class Interpreter {
 
     State _state;
     Core _core;
-    std::ostream &_out;
-    std::istream &_in;
+    std::unique_ptr<IOHandler> _io;
     TimePoint _lastTick;
 
 public:
-    Interpreter(std::ostream &_out, std::istream &_in);
+    Interpreter(std::unique_ptr<IOHandler> &&_io);
 
     void init();
     void load();
+    void start();
     void runOne();
     void updateVideo();
     void updateKeyboard();
 
 private:
+    bool __started{false};
+
     void checkTime();
 
     static constexpr std::chrono::milliseconds CLOCK_RATE() {
