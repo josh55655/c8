@@ -5,6 +5,8 @@ option(WITH_TEST "Enable test module" ON)
 
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(Threads)
+
 add_library(c8support
         src/interpreter.cpp
         src/state.cpp src/opcode.hpp src/opcode.cpp src/opcode_impl.hpp src/core.cpp src/keyboard.cpp src/text_io_handler.cpp)
@@ -12,7 +14,7 @@ add_library(c8support
 add_executable(chip8
         src/main.cpp)
 
-target_link_libraries(chip8 c8support)
+target_link_libraries(chip8 PRIVATE c8support Threads::Threads)
 
 if (WITH_TEST)
     add_subdirectory(test)

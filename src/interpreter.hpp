@@ -19,9 +19,10 @@ class Interpreter {
     Core _core;
     std::unique_ptr<IOHandler> _io;
     TimePoint _lastTick;
+    std::string _programFile;
 
 public:
-    Interpreter(std::unique_ptr<IOHandler> &&_io);
+    Interpreter(std::unique_ptr<IOHandler> &&_io, const std::string &_programFile = "");
 
     void init();
     void load();

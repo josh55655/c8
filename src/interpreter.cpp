@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -11,6 +12,8 @@
 using std::dec;
 using std::endl;
 using std::hex;
+using std::ifstream;
+using std::ios;
 using std::setfill;
 using std::setw;
 using std::stringstream;
@@ -23,7 +26,8 @@ using namespace std::chrono_literals;
 
 namespace chip8 {
 
-Interpreter::Interpreter(std::unique_ptr<IOHandler> &&_io) : _core(_state), _io(std::move(_io)) {}
+Interpreter::Interpreter(std::unique_ptr<IOHandler> &&_io, const std::string &_programFile)
+    : _core(_state), _io(std::move(_io)), _programFile(_programFile) {}
 
 void Interpreter::init() {
     word nextAddress{0};
@@ -41,15 +45,24 @@ void Interpreter::init() {
 }
 
 void Interpreter::load() {
-    _io->log("Loading...");
-    auto program = _io->load();
+    vector<byte> program;
+
+    if (!_programFile.empty()) {
+        auto _programStream{ifstream(_programFile, ios::binary)};
+        _io->log("Loading " + _programFile + "...");
+        program = _io->load(_programStream);
+    } else {
+        _io->log("Loading...");
+        program = _io->load();
+    }
+
     _state.load(program);
     _io->log("CHIP8 Program loaded.");
 }
 
 void Interpreter::start() {
     __started = true;
-    _io->initScreen();
+    _io->init(_state);
 }
 
 void Interpreter::checkTime() {
