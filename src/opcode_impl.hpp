@@ -86,9 +86,9 @@ public:
     void apply(State &state, word _data) override;
 };
 
-class ROUTINE : public Opcode {
+class SYS : public Opcode {
 public:
-    ROUTINE() : Opcode(".routine", ROUTINES_OPCODE) {}
+    SYS() : Opcode(".sys", SYS_OPCODE) {}
     void apply(State &state, word _data) override;
 };
 

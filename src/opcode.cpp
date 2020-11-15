@@ -4,11 +4,20 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 #include "state.hpp"
 
+using std::dec;
+using std::hex;
 using std::make_unique;
 using std::map;
+using std::setfill;
+using std::setw;
+using std::string;
+using std::stringstream;
 using std::unique_ptr;
 using std::vector;
 
@@ -35,7 +44,7 @@ public:
 
 private:
     OpCodeContainer() {
-        _codes[Opcode::ROUTINES_OPCODE] = make_unique<opcode::ROUTINE>();
+        _codes[Opcode::SYS_OPCODE] = make_unique<opcode::SYS>();
         _codes[Opcode::JMP_OPCODE] = make_unique<opcode::JMP>();
         _codes[Opcode::CALL_OPCODE] = make_unique<opcode::CALL>();
         _codes[Opcode::EQ_OPCODE] = make_unique<opcode::EQ>();
@@ -74,6 +83,12 @@ Opcode &makeOpcode(word opcode) {
 Opcode::Opcode(const std::string nmemonic, word code) : nmemonic(nmemonic), code(code) {}
 
 void Opcode::operator()(State &state, word _data) { apply(state, _data); }
+
+std::string Opcode::toString(word _data) {
+    stringstream ss;
+    ss << nmemonic << hex << " 0x" << setfill('0') << setw(4) << _data << dec << setfill(' ');
+    return ss.str();
+}
 
 void opcode::CALL::apply(State &state, word _data) {
     state.push(state.pc());
@@ -143,7 +158,7 @@ void opcode::RAND::apply(State &state, word _data) {
     state.v(reg) = val & state.rand();
 }
 
-void opcode::ROUTINE::apply(State &state, word _data) {
+void opcode::SYS::apply(State &state, word _data) {
     if (_data == 0x00EE) {
         state.pc(state.pop());
     } else if (_data == 0x00E0) {
