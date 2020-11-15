@@ -65,7 +65,7 @@ public:
                      //!<       from I is increased by 1 for each value written, but I itself is left unmodified.
     };
 
-    explicit Opcode(const std::string nmemonic, word code);
+    explicit Opcode(const std::string family, word code);
     virtual ~Opcode() = default;
 
     virtual void apply(State &state, word _data) = 0;
@@ -73,8 +73,11 @@ public:
 
     virtual std::string toString(word _data);
 
-    const std::string nmemonic;
+    const std::string family;
     const word code;
+
+protected:
+    std::string _format(const std::string &nmemonic, word data) const;
 };
 
 Opcode &makeOpcode(word opcode);

@@ -86,12 +86,6 @@ public:
     void apply(State &state, word _data) override;
 };
 
-class SYS : public Opcode {
-public:
-    SYS() : Opcode(".sys", SYS_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
 class FUNC : public Opcode {
 public:
     FUNC() : Opcode(".func", FUNC_OPCODE) {}

@@ -10,6 +10,8 @@
 
 #include "state.hpp"
 
+#include "opcodes/sys.hpp"
+
 using std::dec;
 using std::hex;
 using std::make_unique;
@@ -80,13 +82,15 @@ Opcode &makeOpcode(word opcode) {
     return OpCodeContainer::instance().find(code);
 }
 
-Opcode::Opcode(const std::string nmemonic, word code) : nmemonic(nmemonic), code(code) {}
+Opcode::Opcode(const std::string family, word code) : family(family), code(code) {}
 
 void Opcode::operator()(State &state, word _data) { apply(state, _data); }
 
-std::string Opcode::toString(word _data) {
+string Opcode::toString(word _data) { return _format(family, _data); }
+
+string Opcode::_format(const string &nmemonic, word data) const {
     stringstream ss;
-    ss << nmemonic << hex << " 0x" << setfill('0') << setw(4) << _data << dec << setfill(' ');
+    ss << nmemonic << hex << " 0x" << setfill('0') << setw(4) << data << dec << setfill(' ');
     return ss.str();
 }
 
@@ -156,17 +160,6 @@ void opcode::RAND::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
     state.v(reg) = val & state.rand();
-}
-
-void opcode::SYS::apply(State &state, word _data) {
-    if (_data == 0x00EE) {
-        state.pc(state.pop());
-    } else if (_data == 0x00E0) {
-        state.clrscr();
-    } else {
-        state.push(state.pc());
-        state.pc(_data);
-    }
 }
 
 void opcode::DRAW::apply(State &state, word _data) {

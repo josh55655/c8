@@ -27,7 +27,7 @@ TEST(OpCodesTest, MVI_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("mvi", op.nmemonic);
+    ASSERT_EQ("mvi", op.family);
     ASSERT_EQ(0xA000, op.code);
 }
 
@@ -50,7 +50,7 @@ TEST(OpCodesTest, JMP_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("jmp", op.nmemonic);
+    ASSERT_EQ("jmp", op.family);
     ASSERT_EQ(0x1000, op.code);
 }
 
@@ -73,7 +73,7 @@ TEST(OpCodesTest, CALL_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("call", op.nmemonic);
+    ASSERT_EQ("call", op.family);
     ASSERT_EQ(0x2000, op.code);
 }
 
@@ -99,7 +99,7 @@ TEST(OpCodesTest, EQ_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("eq", op.nmemonic);
+    ASSERT_EQ("eq", op.family);
     ASSERT_EQ(0x3000, op.code);
 }
 
@@ -134,7 +134,7 @@ TEST(OpCodesTest, NEQ_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("neq", op.nmemonic);
+    ASSERT_EQ("neq", op.family);
     ASSERT_EQ(0x4000, op.code);
 }
 
@@ -170,7 +170,7 @@ TEST(OpCodesTest, CMP_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("cmp", op.nmemonic);
+    ASSERT_EQ("cmp", op.family);
     ASSERT_EQ(0x5000, op.code);
 }
 
@@ -211,7 +211,7 @@ TEST(OpCodesTest, SET_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("set", op.nmemonic);
+    ASSERT_EQ("set", op.family);
     ASSERT_EQ(0x6000, op.code);
 }
 
@@ -242,7 +242,7 @@ TEST(OpCodesTest, ADD_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("add", op.nmemonic);
+    ASSERT_EQ("add", op.family);
     ASSERT_EQ(0x7000, op.code);
 }
 
@@ -281,7 +281,7 @@ TEST(OpCodesTest, NREQ_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("nreq", op.nmemonic);
+    ASSERT_EQ("nreq", op.family);
     ASSERT_EQ(0x9000, op.code);
 }
 
@@ -322,7 +322,7 @@ TEST(OpCodesTest, JMPO_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("jmpo", op.nmemonic);
+    ASSERT_EQ("jmpo", op.family);
     ASSERT_EQ(0xb000, op.code);
 }
 
@@ -355,7 +355,7 @@ TEST(OpCodesTest, DRAW_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("draw", op.nmemonic);
+    ASSERT_EQ("draw", op.family);
     ASSERT_EQ(0xd000, op.code);
 }
 
@@ -418,7 +418,7 @@ TEST(OpCodesTest, RAND_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("rand", op.nmemonic);
+    ASSERT_EQ("rand", op.family);
     ASSERT_EQ(0xc000, op.code);
 }
 
@@ -451,7 +451,7 @@ TEST(OpCodesTest, JKEY_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("jkey", op.nmemonic);
+    ASSERT_EQ("jkey", op.family);
     ASSERT_EQ(0xe000, op.code);
 }
 
@@ -501,7 +501,7 @@ TEST(OpCodesTest, ROUTINES_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ(".routine", op.nmemonic);
+    ASSERT_EQ(".routine", op.family);
     ASSERT_EQ(0x0000, op.code);
 }
 
@@ -552,7 +552,7 @@ TEST(OpCodesTest, FUNC_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ(".func", op.nmemonic);
+    ASSERT_EQ(".func", op.family);
     ASSERT_EQ(0xf000, op.code);
 }
 
@@ -647,7 +647,7 @@ TEST(OpCodesTest, VREG_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ(".vreg", op.nmemonic);
+    ASSERT_EQ(".vreg", op.family);
     ASSERT_EQ(0x8000, op.code);
 }
 

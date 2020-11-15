@@ -46,8 +46,8 @@ void TextIOHandler::log(const std::string &msg) { _out << msg << endl; }
 void TextIOHandler::log(word pc, const Core::DecodedOperation &op) {
     _out << "\x1B[1;1H"
          << "\x1B[2K";
-    _out << "Read PC: 0x" << setw(4) << setfill('0') << hex << pc << " opcode: " << op.first.nmemonic << " 0x"
-         << setw(4) << op.second << dec << setfill(' ') << endl;
+    _out << "Read PC: 0x" << setw(4) << setfill('0') << hex << pc << " opcode: " << op.first.family << " 0x" << setw(4)
+         << op.second << dec << setfill(' ') << endl;
 }
 
 void TextIOHandler::init(State &_state) {
