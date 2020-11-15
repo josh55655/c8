@@ -379,10 +379,10 @@ TEST(OpCodesTest, DRAW_execute) {
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 0, 1}), 0x0));
 
     EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 0}), 0x40)).Times(1);
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 2, 0}), 0x40)).Times(1);
 
     EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 1}), 0x80)).Times(1);
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 2, 1}), 0x80)).Times(1);
 
     EXPECT_CALL(state, fetch()).WillOnce(Return(0xD123));
     EXPECT_CALL(state, video()).WillOnce(ReturnRef(display));
@@ -395,19 +395,19 @@ TEST(OpCodesTest, DRAW_execute) {
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 0, 1}), 0x4A));
 
     EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 0}), 0x8A)).Times(1);
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 2, 0}), 0x8A)).Times(1);
 
     EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
-    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 1, 1}), 0xCA)).Times(1);
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 2, 1}), 0xCA)).Times(1);
 
     core.fetch();
     core.execute(core.decode());
     xCord = 10;
     yCord = 1;
-    ASSERT_EQ(1, vf);
+    ASSERT_EQ(0, vf);
     core.fetch();
     core.execute(core.decode());
-    ASSERT_EQ(1, vf);
+    ASSERT_EQ(0, vf);
 }
 
 TEST(OpCodesTest, RAND_decode) {
@@ -493,7 +493,7 @@ TEST(OpCodesTest, JKEY_execute) {
     core.execute(core.decode());
 }
 
-TEST(OpCodesTest, ROUTINES_decode) {
+TEST(OpCodesTest, SYS_decode) {
     NiceMock<StateMock> state;
     Core core(state);
 
@@ -501,11 +501,11 @@ TEST(OpCodesTest, ROUTINES_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ(".routine", op.family);
+    ASSERT_EQ(".sys", op.family);
     ASSERT_EQ(0x0000, op.code);
 }
 
-TEST(OpCodesTest, ROUTINES_execute) {
+TEST(OpCodesTest, SYS_execute) {
     InSequence seq;
     NiceMock<StateMock> state;
     Core core(state);
@@ -519,7 +519,7 @@ TEST(OpCodesTest, ROUTINES_execute) {
     core.execute(core.decode());
 }
 
-TEST(OpCodesTest, ROUTINES_CLRSCR_execute) {
+TEST(OpCodesTest, SYS_CLRSCR_execute) {
     InSequence seq;
     NiceMock<StateMock> state;
     Core core(state);
@@ -531,7 +531,7 @@ TEST(OpCodesTest, ROUTINES_CLRSCR_execute) {
     core.execute(core.decode());
 }
 
-TEST(OpCodesTest, ROUTINES_RETURN_execute) {
+TEST(OpCodesTest, SYS_RETURN_execute) {
     InSequence seq;
     NiceMock<StateMock> state;
     Core core(state);

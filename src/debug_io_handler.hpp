@@ -1,5 +1,5 @@
-#ifndef CHIP8_TEXT_IO_HANDLER_HPP
-#define CHIP8_TEXT_IO_HANDLER_HPP
+#ifndef CHIP8_DEBUG_IO_HANDLER_HPP
+#define CHIP8_DEBUG_IO_HANDLER_HPP
 
 #include <iostream>
 #include <string>
@@ -27,4 +27,4 @@ public:
 
 }  // namespace chip8
 
-#endif  // CHIP8_TEXT_IO_HANDLER_HPP
+#endif  // CHIP8_DEBUG_IO_HANDLER_HPP
