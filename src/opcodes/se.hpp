@@ -11,7 +11,7 @@ class SE : public Opcode {
     static constexpr char NMEMONIC[]{"se"};
 
 public:
-    SE() : Opcode(NMEMONIC, SE_OPCODE) {}
+    SE() : Opcode(".equal", SE_OPCODE) {}
     void apply(State &state, word _data) override;
     std::string toString(word _data) override;
 };
@@ -20,7 +20,7 @@ class SNE : public Opcode {
     static constexpr char NMEMONIC[]{"sne"};
 
 public:
-    SNE() : Opcode(NMEMONIC, SNE_OPCODE) {}
+    SNE() : Opcode(".equal", SNE_OPCODE) {}
     void apply(State &state, word _data) override;
     std::string toString(word _data) override;
 };
@@ -29,7 +29,7 @@ class SER : public Opcode {
     static constexpr char NMEMONIC[]{"ser"};
 
 public:
-    SER() : Opcode(NMEMONIC, SER_OPCODE) {}
+    SER() : Opcode(".equal", SER_OPCODE) {}
     void apply(State &state, word _data) override;
     std::string toString(word _data) override;
 };
