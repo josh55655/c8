@@ -15,11 +15,11 @@ public:
         SYS_OPCODE = 0x0000,   //!< Calls machine code routine at NNN
                                //!< 00E0 => display clear
                                //!> 00EE => Return from subroutine
-        JMP_OPCODE = 0x1000,   //!< Jumps to address NNN.
+        JP_OPCODE = 0x1000,    //!< Jumps to address NNN.
         CALL_OPCODE = 0x2000,  //!< Calls subroutine at NNN.
-        EQ_OPCODE = 0x3000,    //!< Skips the next instruction if VX equals NN.
-        NEQ_OPCODE = 0x4000,   //!< Skips the next instruction if VX doesn't equal NN.
-        REQ_OPCODE = 0x5000,   //!< Skips the next instruction if VX equal VY (5XY0).
+        SE_OPCODE = 0x3000,    //!< Skips the next instruction if VX equals NN.
+        SNE_OPCODE = 0x4000,   //!< Skips the next instruction if VX doesn't equal NN.
+        SER_OPCODE = 0x5000,   //!< Skips the next instruction if VX equal VY (5XY0).
         SET_OPCODE = 0x6000,   //!< Set VX = NN (6XNN).
         ADD_OPCODE = 0x7000,   //!< VX += NN, add NN to VX (7XNN) [Carry flag is not changed].
         VREG_OPCODE = 0x8000,  //!< V Register Operations:

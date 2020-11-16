@@ -8,36 +8,6 @@ namespace chip8::opcode {
 byte getReg(word data, byte r);
 byte getByte(word data);
 
-class JMP : public Opcode {
-public:
-    JMP() : Opcode("jmp", JMP_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class CALL : public Opcode {
-public:
-    CALL() : Opcode("call", CALL_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class EQ : public Opcode {
-public:
-    EQ() : Opcode("eq", EQ_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class NEQ : public Opcode {
-public:
-    NEQ() : Opcode("neq", NEQ_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class CMP : public Opcode {
-public:
-    CMP() : Opcode("cmp", REQ_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
 class SET : public Opcode {
 public:
     SET() : Opcode("set", SET_OPCODE) {}

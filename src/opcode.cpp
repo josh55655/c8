@@ -11,6 +11,9 @@
 #include "state.hpp"
 
 #include "opcodes/sys.hpp"
+#include "opcodes/jp.hpp"
+#include "opcodes/call.hpp"
+#include "opcodes/se.hpp"
 
 using std::dec;
 using std::hex;
@@ -47,11 +50,11 @@ public:
 private:
     OpCodeContainer() {
         _codes[Opcode::SYS_OPCODE] = make_unique<opcode::SYS>();
-        _codes[Opcode::JMP_OPCODE] = make_unique<opcode::JMP>();
+        _codes[Opcode::JP_OPCODE] = make_unique<opcode::JP>();
         _codes[Opcode::CALL_OPCODE] = make_unique<opcode::CALL>();
-        _codes[Opcode::EQ_OPCODE] = make_unique<opcode::EQ>();
-        _codes[Opcode::NEQ_OPCODE] = make_unique<opcode::NEQ>();
-        _codes[Opcode::REQ_OPCODE] = make_unique<opcode::CMP>();
+        _codes[Opcode::SE_OPCODE] = make_unique<opcode::SE>();
+        _codes[Opcode::SNE_OPCODE] = make_unique<opcode::SNE>();
+        _codes[Opcode::SER_OPCODE] = make_unique<opcode::SER>();
         _codes[Opcode::SET_OPCODE] = make_unique<opcode::SET>();
         _codes[Opcode::ADD_OPCODE] = make_unique<opcode::ADD>();
         _codes[Opcode::VREG_OPCODE] = make_unique<opcode::VREG>();
@@ -94,41 +97,7 @@ string Opcode::_format(const string &nmemonic, word data) const {
     return ss.str();
 }
 
-void opcode::CALL::apply(State &state, word _data) {
-    state.push(state.pc());
-    state.pc(_data);
-}
-
 void opcode::MVI::apply(State &state, word _data) { state.indexRegister(_data); }
-
-void opcode::JMP::apply(State &state, word _data) { state.pc(_data); }
-
-void opcode::EQ::apply(State &state, word _data) {
-    byte reg = getReg(_data, 0);
-    byte val = getByte(_data);
-    if (state.v(reg) == val) {
-        // skip next instruction
-        state.pc(state.pc() + State::OPCODE_BYTES);
-    }
-}
-
-void opcode::NEQ::apply(State &state, word _data) {
-    byte reg = getReg(_data, 0);
-    byte val = getByte(_data);
-    if (state.v(reg) != val) {
-        // skip next instruction
-        state.pc(state.pc() + State::OPCODE_BYTES);
-    }
-}
-
-void opcode::CMP::apply(State &state, word _data) {
-    byte r1 = getReg(_data, 0);
-    byte r2 = getReg(_data, 1);
-    if (state.v(r1) == state.v(r2)) {
-        // skip next instruction
-        state.pc(state.pc() + State::OPCODE_BYTES);
-    }
-}
 
 void opcode::SET::apply(State &state, word _data) {
     byte r1 = getReg(_data, 0);

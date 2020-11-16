@@ -8,8 +8,8 @@
 using namespace chip8;
 
 int main(int argc, char *argv[]) {
-    Interpreter i{std::make_unique<TextIOHandler>(std::cout, std::cin), argv[1]};
-    // Interpreter i{std::make_unique<DebugIOHandler>(), argv[1]};
+    // Interpreter i{std::make_unique<TextIOHandler>(std::cout, std::cin), argv[1]};
+    Interpreter i{std::make_unique<DebugIOHandler>(), argv[1]};
 
     i.init();
     i.load();
