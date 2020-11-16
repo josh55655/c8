@@ -14,7 +14,7 @@ add_library(c8support
         src/core.cpp
         src/keyboard.cpp
         src/text_io_handler.cpp
-        src/debug_io_handler.cpp src/opcodes/sys.cpp src/opcodes/jp.cpp src/opcodes/call.hpp src/opcodes/call.cpp src/opcodes/se.cpp)
+        src/debug_io_handler.cpp src/opcodes/sys.cpp src/opcodes/jp.cpp src/opcodes/call.hpp src/opcodes/call.cpp src/opcodes/se.cpp src/opcodes/ld.cpp)
 
 add_executable(chip8
         src/main.cpp)

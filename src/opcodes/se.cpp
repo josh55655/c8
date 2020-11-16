@@ -15,7 +15,7 @@ using std::stringstream;
 
 namespace chip8::opcode {
 
-void opcode::SE::apply(State &state, word _data) {
+void SE::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
     if (state.v(reg) == val) {
@@ -24,7 +24,7 @@ void opcode::SE::apply(State &state, word _data) {
     }
 }
 
-string opcode::SE::toString(word _data) {
+string SE::toString(word _data) {
     stringstream ss;
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
@@ -32,7 +32,7 @@ string opcode::SE::toString(word _data) {
     return ss.str();
 }
 
-void opcode::SNE::apply(State &state, word _data) {
+void SNE::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
     if (state.v(reg) != val) {
@@ -41,7 +41,7 @@ void opcode::SNE::apply(State &state, word _data) {
     }
 }
 
-string opcode::SNE::toString(word _data) {
+string SNE::toString(word _data) {
     stringstream ss;
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
@@ -49,7 +49,7 @@ string opcode::SNE::toString(word _data) {
     return ss.str();
 }
 
-void opcode::SER::apply(State &state, word _data) {
+void SER::apply(State &state, word _data) {
     byte r1 = getReg(_data, 0);
     byte r2 = getReg(_data, 1);
     if (state.v(r1) == state.v(r2)) {
@@ -58,7 +58,7 @@ void opcode::SER::apply(State &state, word _data) {
     }
 }
 
-string opcode::SER::toString(word _data) {
+string SER::toString(word _data) {
     stringstream ss;
     byte reg = getReg(_data, 0);
     byte val = getReg(_data, 1);

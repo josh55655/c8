@@ -2,6 +2,6 @@
 
 namespace chip8::opcode {
 
-void opcode::JP::apply(State &state, word _data) { state.pc(_data); }
+void JP::apply(State &state, word _data) { state.pc(_data); }
 
 }  // namespace chip8::opcode

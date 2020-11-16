@@ -2,7 +2,7 @@
 
 namespace chip8::opcode {
 
-void opcode::CALL::apply(State &state, word _data) {
+void CALL::apply(State &state, word _data) {
     state.push(state.pc());
     state.pc(_data);
 }

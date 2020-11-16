@@ -14,6 +14,7 @@
 #include "opcodes/jp.hpp"
 #include "opcodes/call.hpp"
 #include "opcodes/se.hpp"
+#include "opcodes/ld.hpp"
 
 using std::dec;
 using std::hex;
@@ -55,7 +56,7 @@ private:
         _codes[Opcode::SE_OPCODE] = make_unique<opcode::SE>();
         _codes[Opcode::SNE_OPCODE] = make_unique<opcode::SNE>();
         _codes[Opcode::SER_OPCODE] = make_unique<opcode::SER>();
-        _codes[Opcode::SET_OPCODE] = make_unique<opcode::SET>();
+        _codes[Opcode::LD_OPCODE] = make_unique<opcode::LD>();
         _codes[Opcode::ADD_OPCODE] = make_unique<opcode::ADD>();
         _codes[Opcode::VREG_OPCODE] = make_unique<opcode::VREG>();
         _codes[Opcode::NREQ_OPCODE] = make_unique<opcode::NREQ>();
@@ -98,11 +99,6 @@ string Opcode::_format(const string &nmemonic, word data) const {
 }
 
 void opcode::MVI::apply(State &state, word _data) { state.indexRegister(_data); }
-
-void opcode::SET::apply(State &state, word _data) {
-    byte r1 = getReg(_data, 0);
-    state.v(r1) = _data & 0x00FF;
-}
 
 void opcode::ADD::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);

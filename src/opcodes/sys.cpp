@@ -2,7 +2,7 @@
 
 namespace chip8::opcode {
 
-void opcode::SYS::apply(State &state, word _data) {
+void SYS::apply(State &state, word _data) {
     if (_data == RET_OPCODE) {
         state.pc(state.pop());
     } else if (_data == CLS_OPCODE) {

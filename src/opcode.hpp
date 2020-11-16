@@ -20,7 +20,7 @@ public:
         SE_OPCODE = 0x3000,    //!< Skips the next instruction if VX equals NN.
         SNE_OPCODE = 0x4000,   //!< Skips the next instruction if VX doesn't equal NN.
         SER_OPCODE = 0x5000,   //!< Skips the next instruction if VX equal VY (5XY0).
-        SET_OPCODE = 0x6000,   //!< Set VX = NN (6XNN).
+        LD_OPCODE = 0x6000,    //!< Set VX = NN (6XNN).
         ADD_OPCODE = 0x7000,   //!< VX += NN, add NN to VX (7XNN) [Carry flag is not changed].
         VREG_OPCODE = 0x8000,  //!< V Register Operations:
                                //!< let 8XYO the opcode. Than:

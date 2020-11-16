@@ -8,12 +8,6 @@ namespace chip8::opcode {
 byte getReg(word data, byte r);
 byte getByte(word data);
 
-class SET : public Opcode {
-public:
-    SET() : Opcode("set", SET_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
 class ADD : public Opcode {
 public:
     ADD() : Opcode("add", ADD_OPCODE) {}
