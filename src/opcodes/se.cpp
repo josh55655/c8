@@ -28,7 +28,7 @@ string SE::toString(word _data) {
     stringstream ss;
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
-    ss << NMEMONIC << " V" << hex << int(reg) << ", 0x" << setfill('0') << setw(2) << val << dec << setfill(' ');
+    ss << NMEMONIC << " v" << hex << int(reg) << ", 0x" << setfill('0') << setw(2) << word(val) << dec << setfill(' ');
     return ss.str();
 }
 
@@ -45,7 +45,7 @@ string SNE::toString(word _data) {
     stringstream ss;
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
-    ss << NMEMONIC << " V" << hex << int(reg) << ", 0x" << setfill('0') << setw(2) << val << dec << setfill(' ');
+    ss << NMEMONIC << " v" << hex << int(reg) << ", 0x" << setfill('0') << setw(2) << word(val) << dec << setfill(' ');
     return ss.str();
 }
 
@@ -60,9 +60,26 @@ void SER::apply(State &state, word _data) {
 
 string SER::toString(word _data) {
     stringstream ss;
-    byte reg = getReg(_data, 0);
-    byte val = getReg(_data, 1);
-    ss << NMEMONIC << " V" << hex << int(reg) << ", v" << int(val) << dec << setfill(' ');
+    byte r1 = getReg(_data, 0);
+    byte r2 = getReg(_data, 1);
+    ss << NMEMONIC << " v" << hex << int(r1) << ", v" << int(r2) << dec << setfill(' ');
+    return ss.str();
+}
+
+void SNER::apply(State &state, word _data) {
+    byte r1 = getReg(_data, 0);
+    byte r2 = getReg(_data, 1);
+    if (state.v(r1) != state.v(r2)) {
+        // skip next instruction
+        state.pc(state.pc() + State::OPCODE_BYTES);
+    }
+}
+
+string SNER::toString(word _data) {
+    stringstream ss;
+    byte r1 = getReg(_data, 0);
+    byte r2 = getReg(_data, 1);
+    ss << NMEMONIC << " v" << hex << int(r1) << ", v" << int(r2) << dec << setfill(' ');
     return ss.str();
 }
 

@@ -7,36 +7,7 @@ namespace chip8::opcode {
 
 byte getReg(word data, byte r);
 byte getByte(word data);
-
-class ADD : public Opcode {
-public:
-    ADD() : Opcode("add", ADD_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class NREQ : public Opcode {
-public:
-    NREQ() : Opcode("nreq", NREQ_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class MVI : public Opcode {
-public:
-    MVI() : Opcode("mvi", MVI_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class JMPO : public Opcode {
-public:
-    JMPO() : Opcode("jmpo", JMPO_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
-
-class RAND : public Opcode {
-public:
-    RAND() : Opcode("rand", RAND_OPCODE) {}
-    void apply(State &state, word _data) override;
-};
+word getWord(word data);
 
 class DRAW : public Opcode {
 public:

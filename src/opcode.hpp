@@ -33,10 +33,10 @@ public:
                                //!< O == 6 <=> VX >>= 1 [Least significant bit of VX is stored in VF]
                                //!< O == 7 <=> VX = VY - VX [with carry flag]
                                //!< O == E <=> VX <<= 1 [Most significant bit of VX is stored in VF]
-        NREQ_OPCODE = 0x9000,  //!< Skips the next instruction if VX is not equal to VY (9XY0).
-        MVI_OPCODE = 0xA000,   //!< Sets Index Register to the address NNN.
-        JMPO_OPCODE = 0xB000,  //!< Jump to address NNN + V0
-        RAND_OPCODE = 0xC000,  //!< VX = rand() AND NN [CXNN]
+        SNER_OPCODE = 0x9000,  //!< Skips the next instruction if VX is not equal to VY (9XY0).
+        LDI_OPCODE = 0xA000,   //!< Sets Index Register to the address NNN.
+        JPV0_OPCODE = 0xB000,  //!< Jump to address NNN + V0
+        RND_OPCODE = 0xC000,   //!< VX = rand() AND NN [CXNN]
         DRAW_OPCODE = 0xD000,  //!< Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N
                                //!< pixels. Each row of 8 pixels is read as bit-coded starting from memory location I; I
                                //!< value doesn’t change after the execution of this instruction. As described above, VF

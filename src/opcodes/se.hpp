@@ -26,10 +26,19 @@ public:
 };
 
 class SER : public Opcode {
-    static constexpr char NMEMONIC[]{"ser"};
+    static constexpr char NMEMONIC[]{"se"};
 
 public:
     SER() : Opcode(".equal", SER_OPCODE) {}
+    void apply(State &state, word _data) override;
+    std::string toString(word _data) override;
+};
+
+class SNER : public Opcode {
+    static constexpr char NMEMONIC[]{"sne"};
+
+public:
+    SNER() : Opcode(".equal", SNER_OPCODE) {}
     void apply(State &state, word _data) override;
     std::string toString(word _data) override;
 };

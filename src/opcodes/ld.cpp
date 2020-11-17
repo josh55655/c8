@@ -24,7 +24,17 @@ string LD::toString(word _data) {
     stringstream ss;
     byte reg = getReg(_data, 0);
     byte val = getByte(_data);
-    ss << NMEMONIC << " V" << hex << int(reg) << ", 0x" << setfill('0') << setw(2) << val << dec << setfill(' ');
+    ss << NMEMONIC << " v" << hex << int(reg) << ", 0x" << setfill('0') << setw(2) << word(val) << dec << setfill(' ');
+    return ss.str();
+}
+
+void LDI::apply(State &state, word _data) { state.indexRegister(getWord(_data)); }
+
+string LDI::toString(word _data) {
+    stringstream ss;
+    word val = getWord(_data);
+    ss << NMEMONIC << " i"
+       << ", 0x" << setfill('0') << setw(4) << val << dec << setfill(' ');
     return ss.str();
 }
 

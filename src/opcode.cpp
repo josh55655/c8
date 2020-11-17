@@ -15,6 +15,8 @@
 #include "opcodes/call.hpp"
 #include "opcodes/se.hpp"
 #include "opcodes/ld.hpp"
+#include "opcodes/add.hpp"
+#include "opcodes/rnd.hpp"
 
 using std::dec;
 using std::hex;
@@ -59,10 +61,10 @@ private:
         _codes[Opcode::LD_OPCODE] = make_unique<opcode::LD>();
         _codes[Opcode::ADD_OPCODE] = make_unique<opcode::ADD>();
         _codes[Opcode::VREG_OPCODE] = make_unique<opcode::VREG>();
-        _codes[Opcode::NREQ_OPCODE] = make_unique<opcode::NREQ>();
-        _codes[Opcode::MVI_OPCODE] = make_unique<opcode::MVI>();
-        _codes[Opcode::JMPO_OPCODE] = make_unique<opcode::JMPO>();
-        _codes[Opcode::RAND_OPCODE] = make_unique<opcode::RAND>();
+        _codes[Opcode::SNER_OPCODE] = make_unique<opcode::SNER>();
+        _codes[Opcode::LDI_OPCODE] = make_unique<opcode::LDI>();
+        _codes[Opcode::JPV0_OPCODE] = make_unique<opcode::JPV0>();
+        _codes[Opcode::RND_OPCODE] = make_unique<opcode::RND>();
         _codes[Opcode::DRAW_OPCODE] = make_unique<opcode::DRAW>();
         _codes[Opcode::JKEY_OPCODE] = make_unique<opcode::JKEY>();
         _codes[Opcode::FUNC_OPCODE] = make_unique<opcode::FUNC>();
@@ -81,6 +83,8 @@ byte opcode::getReg(word _data, byte r) {
 
 byte opcode::getByte(word data) { return data & 0x00FF; }
 
+word opcode::getWord(word data) { return data & 0x0FFF; }
+
 Opcode &makeOpcode(word opcode) {
     word code = opcode & 0xF000;
     return OpCodeContainer::instance().find(code);
@@ -94,37 +98,8 @@ string Opcode::toString(word _data) { return _format(family, _data); }
 
 string Opcode::_format(const string &nmemonic, word data) const {
     stringstream ss;
-    ss << nmemonic << hex << " 0x" << setfill('0') << setw(4) << data << dec << setfill(' ');
+    ss << nmemonic << hex << " 0x" << setfill('0') << setw(4) << opcode::getWord(data) << dec << setfill(' ');
     return ss.str();
-}
-
-void opcode::MVI::apply(State &state, word _data) { state.indexRegister(_data); }
-
-void opcode::ADD::apply(State &state, word _data) {
-    byte reg = getReg(_data, 0);
-    byte val = getByte(_data);
-    state.v(reg) += val;
-}
-
-void opcode::NREQ::apply(State &state, word _data) {
-    byte r1 = getReg(_data, 0);
-    byte r2 = getReg(_data, 1);
-    if (state.v(r1) != state.v(r2)) {
-        // skip next instruction
-        state.pc(state.pc() + State::OPCODE_BYTES);
-    }
-}
-
-void opcode::JMPO::apply(State &state, word _data) {
-    byte reg = getReg(_data, 0);
-    byte val = getByte(_data);
-    state.pc(state.v(reg) + val);
-}
-
-void opcode::RAND::apply(State &state, word _data) {
-    byte reg = getReg(_data, 0);
-    byte val = getByte(_data);
-    state.v(reg) = val & state.rand();
 }
 
 void opcode::DRAW::apply(State &state, word _data) {

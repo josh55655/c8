@@ -16,6 +16,15 @@ public:
     std::string toString(word _data) override;
 };
 
+class LDI : public Opcode {
+    static constexpr char NMEMONIC[]{"ld"};
+
+public:
+    LDI() : Opcode("load", LDI_OPCODE) {}
+    void apply(State &state, word _data) override;
+    std::string toString(word _data) override;
+};
+
 }  // namespace chip8::opcode
 
 #endif  // CHIP8_OPCODES_LD_HPP
