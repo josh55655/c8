@@ -8,7 +8,7 @@
 namespace chip8::opcode {
 
 class SYS : public Opcode {
-    static constexpr char NMEMONIC[]{"SYS"};
+    static constexpr char NMEMONIC[]{"sys"};
     static constexpr word CLS_OPCODE{0x00E0};
     static constexpr char CLS_NMEMONIC[]{"cls"};
     static constexpr word RET_OPCODE{0x00EE};

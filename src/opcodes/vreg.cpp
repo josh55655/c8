@@ -15,7 +15,12 @@ using std::stringstream;
 
 namespace chip8::opcode {
 
-const string VREG::NMEMONIC[] = {"LD", "OR", "AND", "XOR", "ADD", "SUB", "SHR", "SUBN", "SHL"};
+const string VREG::NMEMONIC[] = {"ld", "or", "and", "xor", "add", "sub", "shr", "subn", "shl"};
+
+bool VREG::valid(word _data) {
+    byte h = getNibble(_data);
+    return (h < 8) || (h == 0xE);
+}
 
 void VREG::apply(State &state, word _data) {
     byte r1 = getReg(_data, 0);

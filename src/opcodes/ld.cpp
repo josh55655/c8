@@ -120,4 +120,22 @@ string LDX::toString(word _data) {
     return ss.str();
 }
 
+bool LDX::valid(word _data) {
+    byte f = getNibble(_data);
+    switch (f) {
+    case GET_DT_OPCODE:
+    case GET_KEY_OPCODE:
+    case SET_DT_OPCODE:
+    case SET_ST_OPCODE:
+    case ADDX_OPCODE:
+    case FONT_OPCODE:
+    case BCD_OPCODE:
+    case STORE_OPCODE:
+    case READ_OPCODE:
+        return true;
+    }
+
+    return false;
+}
+
 }  // namespace chip8::opcode

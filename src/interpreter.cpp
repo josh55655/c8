@@ -60,9 +60,15 @@ void Interpreter::load() {
     _io->log("CHIP8 Program loaded.");
 }
 
-void Interpreter::start() {
+void Interpreter::run() {
     __started = true;
     _io->init(_state);
+
+    while (true) {
+        runOne();
+        updateVideo();
+        updateKeyboard();
+    }
 }
 
 void Interpreter::checkTime() {

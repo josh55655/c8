@@ -51,6 +51,7 @@ class SKP : public Opcode {
 
 public:
     SKP() : Opcode(".skip", SKP_OPCODE) {}
+    bool valid(word _data) override;
     void apply(State &state, word _data) override;
     std::string toString(word _data) override;
 };

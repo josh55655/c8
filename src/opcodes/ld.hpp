@@ -49,6 +49,7 @@ class LDX : public Opcode {
 
 public:
     LDX() : Opcode(".load", LDX_OPCODE) {}
+    bool valid(word _data) override;
     void apply(State &state, word _data) override;
     std::string toString(word _data) override;
 };

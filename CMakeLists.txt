@@ -26,10 +26,11 @@ add_library(c8support
         src/text_io_handler.cpp
         src/debug_io_handler.cpp)
 
-add_executable(chip8
-        src/main.cpp)
+add_executable(chip8 src/main.cpp)
+add_executable(dch8 src/dch8.cpp)
 
 target_link_libraries(chip8 PRIVATE c8support c8opcodes Threads::Threads)
+target_link_libraries(dch8 PRIVATE c8support c8opcodes)
 
 if (WITH_TEST)
     add_subdirectory(test)

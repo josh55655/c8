@@ -83,6 +83,11 @@ string SNER::toString(word _data) {
     return ss.str();
 }
 
+bool SKP::valid(word _data) {
+    byte f = getByte(_data);
+    return (f == OPCODE) || (f == SKNP_OPCODE);
+}
+
 void SKP::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte f = getByte(_data);

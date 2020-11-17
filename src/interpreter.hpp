@@ -26,7 +26,7 @@ public:
 
     void init();
     void load();
-    void start();
+    void run();
     void runOne();
     void updateVideo();
     void updateKeyboard();
