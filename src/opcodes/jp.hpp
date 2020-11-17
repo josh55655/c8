@@ -9,13 +9,13 @@ namespace chip8::opcode {
 
 class JP : public Opcode {
 public:
-    JP() : Opcode("jp", JP_OPCODE) {}
+    JP() : Opcode(".jump", JP_OPCODE) {}
     void apply(State &state, word _data) override;
 };
 
 class JPV0 : public Opcode {
 public:
-    JPV0() : Opcode("jp", JPV0_OPCODE) {}
+    JPV0() : Opcode(".jump", JPV0_OPCODE) {}
     void apply(State &state, word _data) override;
     std::string toString(word _data) override;
 };

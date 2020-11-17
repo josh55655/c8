@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <vector>
 
 #include "../opcode_impl.hpp"
 
@@ -12,6 +13,7 @@ using std::setfill;
 using std::setw;
 using std::string;
 using std::stringstream;
+using std::vector;
 
 namespace chip8::opcode {
 
@@ -35,6 +37,72 @@ string LDI::toString(word _data) {
     word val = getWord(_data);
     ss << NMEMONIC << " i"
        << ", 0x" << setfill('0') << setw(4) << val << dec << setfill(' ');
+    return ss.str();
+}
+
+void LDX::apply(State &state, word _data) {
+    byte reg = getReg(_data, 0);
+    byte f = getByte(_data);
+
+    if (f == GET_DT_OPCODE) {
+        state.v(reg) = state.delayTimer();
+    } else if (f == GET_KEY_OPCODE) {
+        state.readKey(reg);
+    } else if (f == SET_DT_OPCODE) {
+        state.delayTimer(state.v(reg));
+    } else if (f == SET_ST_OPCODE) {
+        state.soundTimer(state.v(reg));
+    } else if (f == ADDX_OPCODE) {
+        state.indexRegister(state.indexRegister() + state.v(reg));
+    } else if (f == FONT_OPCODE) {
+        state.indexRegister(state.sprite(state.v(reg)));
+    } else if (f == BCD_OPCODE) {
+        state.storeBCD(state.v(reg));
+    } else if (f == STORE_OPCODE) {
+        vector<byte> data;
+        byte i = 0;
+        for (; i <= reg; ++i) data.push_back(state.v(i));
+        state.write(data, state.indexRegister());
+        state.indexRegister(state.indexRegister() + i + 1);
+    } else if (f == READ_OPCODE) {
+        vector<byte> data = state.read(state.indexRegister(), reg + 1);
+        byte i = 0;
+        for (; i <= reg; ++i) state.v(i) = data[i];
+        state.indexRegister(state.indexRegister() + i + 1);
+    }
+}
+
+string LDX::toString(word _data) {
+    stringstream ss;
+    byte reg = getReg(_data, 0);
+    byte f = getByte(_data);
+
+    if (f == GET_DT_OPCODE) {
+        ss << NMEMONIC << " v" << hex << int(reg) << ", dt" << dec;
+    } else if (f == GET_KEY_OPCODE) {
+        ss << NMEMONIC << " v" << hex << int(reg) << ", k" << dec;
+    } else if (f == SET_DT_OPCODE) {
+        ss << NMEMONIC << " dt"
+           << ", v" << hex << int(reg) << dec;
+    } else if (f == SET_ST_OPCODE) {
+        ss << NMEMONIC << " st"
+           << ", v" << hex << int(reg) << dec;
+    } else if (f == ADDX_OPCODE) {
+        ss << ADD_NMEMONIC << " i"
+           << ", v" << hex << int(reg) << dec;
+    } else if (f == FONT_OPCODE) {
+        ss << NMEMONIC << " f"
+           << ", v" << hex << int(reg) << dec;
+    } else if (f == BCD_OPCODE) {
+        ss << NMEMONIC << " b"
+           << ", v" << hex << int(reg) << dec;
+    } else if (f == STORE_OPCODE) {
+        ss << NMEMONIC << " [i]"
+           << ", v" << hex << int(reg) << dec;
+    } else if (f == READ_OPCODE) {
+        ss << NMEMONIC << " v" << hex << int(reg) << ", [i]" << dec;
+    }
+
     return ss.str();
 }
 

@@ -27,7 +27,7 @@ TEST(OpCodesTest, MVI_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("mvi", op.family);
+    ASSERT_EQ(".load", op.family);
     ASSERT_EQ(0xA000, op.code);
 }
 
@@ -50,7 +50,7 @@ TEST(OpCodesTest, JMP_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("jmp", op.family);
+    ASSERT_EQ(".jump", op.family);
     ASSERT_EQ(0x1000, op.code);
 }
 
@@ -99,7 +99,7 @@ TEST(OpCodesTest, EQ_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("eq", op.family);
+    ASSERT_EQ(".skip", op.family);
     ASSERT_EQ(0x3000, op.code);
 }
 
@@ -134,7 +134,7 @@ TEST(OpCodesTest, NEQ_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0123, data);
-    ASSERT_EQ("neq", op.family);
+    ASSERT_EQ(".skip", op.family);
     ASSERT_EQ(0x4000, op.code);
 }
 
@@ -170,7 +170,7 @@ TEST(OpCodesTest, CMP_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("cmp", op.family);
+    ASSERT_EQ(".skip", op.family);
     ASSERT_EQ(0x5000, op.code);
 }
 
@@ -211,7 +211,7 @@ TEST(OpCodesTest, SET_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("set", op.family);
+    ASSERT_EQ(".load", op.family);
     ASSERT_EQ(0x6000, op.code);
 }
 
@@ -281,7 +281,7 @@ TEST(OpCodesTest, NREQ_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("nreq", op.family);
+    ASSERT_EQ(".skip", op.family);
     ASSERT_EQ(0x9000, op.code);
 }
 
@@ -322,7 +322,7 @@ TEST(OpCodesTest, JMPO_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("jmpo", op.family);
+    ASSERT_EQ(".jump", op.family);
     ASSERT_EQ(0xb000, op.code);
 }
 
@@ -333,13 +333,13 @@ TEST(OpCodesTest, JMPO_execute) {
     byte datum{0x30};
 
     EXPECT_CALL(state, fetch()).WillOnce(Return(0xB123));
-    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, v(0)).WillOnce(ReturnRef(datum));
     EXPECT_CALL(state, pc()).Times(0);
-    EXPECT_CALL(state, pc(0x0053)).Times(1);
+    EXPECT_CALL(state, pc(0x0153)).Times(1);
     EXPECT_CALL(state, fetch()).WillOnce(Return(0xB512));
-    EXPECT_CALL(state, v(5)).WillOnce(ReturnRef(datum));
+    EXPECT_CALL(state, v(0)).WillOnce(ReturnRef(datum));
     EXPECT_CALL(state, pc()).Times(0);
-    EXPECT_CALL(state, pc(0x0042)).Times(1);
+    EXPECT_CALL(state, pc(0x0542)).Times(1);
 
     core.fetch();
     core.execute(core.decode());
@@ -355,7 +355,7 @@ TEST(OpCodesTest, DRAW_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("draw", op.family);
+    ASSERT_EQ(".draw", op.family);
     ASSERT_EQ(0xd000, op.code);
 }
 
@@ -418,7 +418,7 @@ TEST(OpCodesTest, RAND_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("rand", op.family);
+    ASSERT_EQ(".random", op.family);
     ASSERT_EQ(0xc000, op.code);
 }
 
@@ -451,7 +451,7 @@ TEST(OpCodesTest, JKEY_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("jkey", op.family);
+    ASSERT_EQ(".skip", op.family);
     ASSERT_EQ(0xe000, op.code);
 }
 
@@ -552,7 +552,7 @@ TEST(OpCodesTest, FUNC_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ(".func", op.family);
+    ASSERT_EQ(".load", op.family);
     ASSERT_EQ(0xf000, op.code);
 }
 

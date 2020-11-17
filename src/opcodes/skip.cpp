@@ -1,4 +1,4 @@
-#include "se.hpp"
+#include "skip.hpp"
 
 #include <string>
 #include <sstream>
@@ -80,6 +80,31 @@ string SNER::toString(word _data) {
     byte r1 = getReg(_data, 0);
     byte r2 = getReg(_data, 1);
     ss << NMEMONIC << " v" << hex << int(r1) << ", v" << int(r2) << dec << setfill(' ');
+    return ss.str();
+}
+
+void SKP::apply(State &state, word _data) {
+    byte reg = getReg(_data, 0);
+    byte f = getByte(_data);
+
+    if (f == OPCODE) {
+        if (state.keyPressed(state.v(reg))) state.pc(state.pc() + state.OPCODE_BYTES);
+    } else if (f == SKNP_OPCODE) {
+        if (!state.keyPressed(state.v(reg))) state.pc(state.pc() + state.OPCODE_BYTES);
+    }
+}
+
+string SKP::toString(word _data) {
+    stringstream ss;
+    byte reg = getReg(_data, 0);
+    byte f = getByte(_data);
+
+    if (f == OPCODE) {
+        ss << NMEMONIC << " v" << hex << int(reg) << dec;
+    } else if (f == SKNP_OPCODE) {
+        ss << SKNP_NMEMONIC << " v" << hex << int(reg) << dec;
+    }
+
     return ss.str();
 }
 

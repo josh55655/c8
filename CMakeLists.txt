@@ -12,10 +12,11 @@ add_library(c8opcodes
         src/opcodes/jp.cpp
         src/opcodes/call.hpp
         src/opcodes/call.cpp
-        src/opcodes/se.cpp
+        src/opcodes/skip.cpp
         src/opcodes/ld.cpp
         src/opcodes/add.cpp
-        src/opcodes/rnd.cpp)
+        src/opcodes/rnd.cpp
+        src/opcodes/drw.cpp)
 
 add_library(c8support
         src/interpreter.cpp

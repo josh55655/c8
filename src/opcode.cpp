@@ -13,10 +13,11 @@
 #include "opcodes/sys.hpp"
 #include "opcodes/jp.hpp"
 #include "opcodes/call.hpp"
-#include "opcodes/se.hpp"
+#include "opcodes/skip.hpp"
 #include "opcodes/ld.hpp"
 #include "opcodes/add.hpp"
 #include "opcodes/rnd.hpp"
+#include "opcodes/drw.hpp"
 
 using std::dec;
 using std::hex;
@@ -65,9 +66,9 @@ private:
         _codes[Opcode::LDI_OPCODE] = make_unique<opcode::LDI>();
         _codes[Opcode::JPV0_OPCODE] = make_unique<opcode::JPV0>();
         _codes[Opcode::RND_OPCODE] = make_unique<opcode::RND>();
-        _codes[Opcode::DRAW_OPCODE] = make_unique<opcode::DRAW>();
-        _codes[Opcode::JKEY_OPCODE] = make_unique<opcode::JKEY>();
-        _codes[Opcode::FUNC_OPCODE] = make_unique<opcode::FUNC>();
+        _codes[Opcode::DRW_OPCODE] = make_unique<opcode::DRW>();
+        _codes[Opcode::SKP_OPCODE] = make_unique<opcode::SKP>();
+        _codes[Opcode::LDX_OPCODE] = make_unique<opcode::LDX>();
     }
 
     map<word, OpcodePtr> _codes;
@@ -80,6 +81,8 @@ byte opcode::getReg(word _data, byte r) {
 
     return (_data & 0x00F0) >> 4;
 }
+
+byte opcode::getNibble(word data) { return data & 0x000F; }
 
 byte opcode::getByte(word data) { return data & 0x00FF; }
 
@@ -100,71 +103,6 @@ string Opcode::_format(const string &nmemonic, word data) const {
     stringstream ss;
     ss << nmemonic << hex << " 0x" << setfill('0') << setw(4) << opcode::getWord(data) << dec << setfill(' ');
     return ss.str();
-}
-
-void opcode::DRAW::apply(State &state, word _data) {
-    byte r1 = getReg(_data, 0);
-    byte r2 = getReg(_data, 1);
-    byte h = (_data & 0x000F);
-    byte y = 0;
-
-    auto vMemory = state.video();
-    byte cx = state.v(r1), cy = state.v(r2);
-    auto sprite = state.read(state.indexRegister(), h);
-    while (y < h) {
-        vector<byte> row;
-        for (byte x = 0; x < 8; ++x) {
-            byte current = vMemory[(cy + y) * CHIP8_COLS + cx + x];
-            byte p = (sprite[y] & (0x80 >> x)) ^ current;
-            row.push_back(p);
-            if (current && !p) state.v(0xf) = 1;
-        }
-        state.video(row, (cy + y) * CHIP8_COLS + cx);
-        ++y;
-    }
-}
-
-void opcode::JKEY::apply(State &state, word _data) {
-    byte reg = getReg(_data, 0);
-    byte val = getByte(_data);
-
-    if (val == 0x9e) {
-        if (state.keyPressed(state.v(reg))) state.pc(state.pc() + state.OPCODE_BYTES);
-    } else if (val == 0xa1) {
-        if (!state.keyPressed(state.v(reg))) state.pc(state.pc() + state.OPCODE_BYTES);
-    }
-}
-
-void opcode::FUNC::apply(State &state, word _data) {
-    byte reg = getReg(_data, 0);
-    byte val = getByte(_data);
-
-    if (val == 0x07) {
-        state.v(reg) = state.delayTimer();
-    } else if (val == 0x0A) {
-        state.readKey(reg);
-    } else if (val == 0x15) {
-        state.delayTimer(state.v(reg));
-    } else if (val == 0x18) {
-        state.soundTimer(state.v(reg));
-    } else if (val == 0x1E) {
-        state.indexRegister(state.indexRegister() + state.v(reg));
-    } else if (val == 0x29) {
-        state.indexRegister(state.sprite(state.v(reg)));
-    } else if (val == 0x33) {
-        state.storeBCD(state.v(reg));
-    } else if (val == 0x55) {
-        vector<byte> data;
-        byte i = 0;
-        for (; i <= reg; ++i) data.push_back(state.v(i));
-        state.write(data, state.indexRegister());
-        state.indexRegister(state.indexRegister() + i + 1);
-    } else if (val == 0x65) {
-        vector<byte> data = state.read(state.indexRegister(), reg + 1);
-        byte i = 0;
-        for (; i <= reg; ++i) state.v(i) = data[i];
-        state.indexRegister(state.indexRegister() + i + 1);
-    }
 }
 
 void opcode::VREG::apply(State &state, word _data) {
