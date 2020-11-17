@@ -11,6 +11,7 @@ class JP : public Opcode {
 public:
     JP() : Opcode(".jump", JP_OPCODE) {}
     void apply(State &state, word _data) override;
+    std::string toString(word _data) override;
 };
 
 class JPV0 : public Opcode {

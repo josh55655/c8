@@ -14,9 +14,8 @@ add_library(c8opcodes
         src/opcodes/call.cpp
         src/opcodes/skip.cpp
         src/opcodes/ld.cpp
-        src/opcodes/add.cpp
         src/opcodes/rnd.cpp
-        src/opcodes/drw.cpp)
+        src/opcodes/drw.cpp src/opcodes/vreg.cpp)
 
 add_library(c8support
         src/interpreter.cpp

@@ -25,6 +25,15 @@ public:
     std::string toString(word _data) override;
 };
 
+class ADD : public Opcode {
+    static constexpr char NMEMONIC[]{"add"};
+
+public:
+    ADD() : Opcode(".load", ADD_OPCODE) {}
+    void apply(State &state, word _data) override;
+    std::string toString(word _data) override;
+};
+
 class LDX : public Opcode {
     static constexpr char NMEMONIC[]{"ld"};
     static constexpr char ADD_NMEMONIC[]{"add"};

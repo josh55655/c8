@@ -242,7 +242,7 @@ TEST(OpCodesTest, ADD_decode) {
     core.fetch();
     auto [op, data] = core.decode();
     ASSERT_EQ(0x0120, data);
-    ASSERT_EQ("add", op.family);
+    ASSERT_EQ(".load", op.family);
     ASSERT_EQ(0x7000, op.code);
 }
 
@@ -829,8 +829,8 @@ TEST(OpCodesTest, VREG_LSH_execute) {
     ON_CALL(state, v(1)).WillByDefault(ReturnRef(v1));
     ON_CALL(state, v(0xf)).WillByDefault(ReturnRef(vf));
 
-    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8128));
-    EXPECT_CALL(state, fetch()).WillOnce(Return(0x8128));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x812E));
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0x812E));
 
     core.fetch();
     core.execute(core.decode());

@@ -40,6 +40,20 @@ string LDI::toString(word _data) {
     return ss.str();
 }
 
+void ADD::apply(State &state, word _data) {
+    byte reg = getReg(_data, 0);
+    byte val = getByte(_data);
+    state.v(reg) += val;
+}
+
+string ADD::toString(word _data) {
+    stringstream ss;
+    byte reg = getReg(_data, 0);
+    byte val = getByte(_data);
+    ss << NMEMONIC << " v" << hex << int(reg) << ", 0x" << setfill('0') << setw(2) << word(val) << dec << setfill(' ');
+    return ss.str();
+}
+
 void LDX::apply(State &state, word _data) {
     byte reg = getReg(_data, 0);
     byte f = getByte(_data);
