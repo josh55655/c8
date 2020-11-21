@@ -34,12 +34,12 @@ DebugIOHandler::~DebugIOHandler() noexcept {}
 void DebugIOHandler::log(const std::string &msg) { cout << msg << endl; }
 
 void DebugIOHandler::log(word pc, const Core::DecodedOperation &op) {
-    cout << "0x" << setw(4) << setfill('0') << pc << " " << op.first.toString(op.second) << endl;
+    cout << "0x" << setw(4) << setfill('0') << hex << pc << dec << " " << op.first.toString(op.second) << endl;
 }
 
 void DebugIOHandler::init(State &_state) {}
 
-void DebugIOHandler::draw(const State &_state) {}
+void DebugIOHandler::draw(const State &_state) { cout << to_string(_state) << endl; }
 
 vector<byte> DebugIOHandler::load() { return load(std::cin); }
 

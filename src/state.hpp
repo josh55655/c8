@@ -76,6 +76,8 @@ public:
     friend class StateTest;
 };
 
+std::string to_string(const State &state);
+
 }  // namespace chip8
 
 #endif  // CHIP8_STATE_HPP

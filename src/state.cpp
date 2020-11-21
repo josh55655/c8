@@ -3,13 +3,24 @@
 
 #include <algorithm>
 #include <memory>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <iomanip>
 
 #include "opcode.hpp"
 #include "keyboard.hpp"
 
 using std::copy;
+using std::dec;
+using std::endl;
+using std::hex;
 using std::make_unique;
 using std::pair;
+using std::setfill;
+using std::setw;
+using std::string;
+using std::stringstream;
 using std::vector;
 
 namespace chip8 {
@@ -110,6 +121,20 @@ void State::storeBCD(byte value) {
     byte u = (value - d * 10 - h * 100);
 
     write({h, d, u}, indexRegister());
+}
+
+string to_string(const State &state) {
+    stringstream ss;
+    for (int i = 0; i < 0x10; ++i) {
+        ss << "v" << setfill('0') << setw(2) << i << ": 0x" << setw(2) << hex << word(state.v(i)) << dec << setfill(' ')
+           << " ";
+        if (i == 0x07) ss << endl;
+    }
+
+    ss << endl;
+    ss << "i: 0x" << setw(4) << setfill('0') << hex << state.indexRegister() << dec << setfill(' ') << endl;
+
+    return ss.str();
 }
 
 }  // namespace chip8

@@ -30,7 +30,7 @@ add_library(c8support
 add_executable(chip8 src/main.cpp)
 add_executable(dch8 src/dch8.cpp)
 
-target_link_libraries(chip8 PRIVATE c8support c8opcodes Threads::Threads)
+target_link_libraries(chip8 PRIVATE c8support c8opcodes Threads::Threads Boost::program_options)
 target_link_libraries(dch8 PRIVATE c8support c8opcodes Boost::program_options)
 
 if (WITH_TEST)
