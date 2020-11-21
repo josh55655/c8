@@ -6,6 +6,7 @@ option(WITH_TEST "Enable test module" ON)
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(Threads)
+find_package(Boost REQUIRED COMPONENTS program_options)
 
 add_library(c8opcodes
         src/opcodes/sys.cpp
@@ -30,7 +31,7 @@ add_executable(chip8 src/main.cpp)
 add_executable(dch8 src/dch8.cpp)
 
 target_link_libraries(chip8 PRIVATE c8support c8opcodes Threads::Threads)
-target_link_libraries(dch8 PRIVATE c8support c8opcodes)
+target_link_libraries(dch8 PRIVATE c8support c8opcodes Boost::program_options)
 
 if (WITH_TEST)
     add_subdirectory(test)
