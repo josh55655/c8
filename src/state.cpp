@@ -113,7 +113,7 @@ void State::delayTimer(byte tmr) { _impl->delayTimer = tmr; }
 byte &State::soundTimer() const { return _impl->soundTimer; }
 void State::soundTimer(byte tmr) { _impl->soundTimer = tmr; }
 
-std::size_t State::sprite(byte index) const { return _impl->_spritesAddresses.at(index); }
+std::size_t State::sprite(byte index) const { return index * 5; }
 
 void State::storeBCD(byte value) {
     byte h = value / 100;

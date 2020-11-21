@@ -77,12 +77,12 @@ void LDX::apply(State &state, word _data) {
         byte i = 0;
         for (; i <= reg; ++i) data.push_back(state.v(i));
         state.write(data, state.indexRegister());
-        state.indexRegister(state.indexRegister() + i + 1);
+        state.indexRegister(state.indexRegister() + i);
     } else if (f == READ_OPCODE) {
         vector<byte> data = state.read(state.indexRegister(), reg + 1);
         byte i = 0;
         for (; i <= reg; ++i) state.v(i) = data[i];
-        state.indexRegister(state.indexRegister() + i + 1);
+        state.indexRegister(state.indexRegister() + i);
     }
 }
 

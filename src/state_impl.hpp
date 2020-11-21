@@ -23,7 +23,6 @@ struct State::_Pimpl {
     byte soundTimer;    // sound timer register, when comes to 0, buzzer ring
     bool videoChanged;  // when a video memory update occurs, this flags recorded the event
     byte keyPressed;    // last key pressed;
-    std::array<size_t, 16> _spritesAddresses;
 };
 
 }  // namespace chip8
