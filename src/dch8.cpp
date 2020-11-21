@@ -37,15 +37,18 @@ void load(const std::string &_programFile) {
             word _word{0};
             char b;
             _programStream.get(b);
-            _word = b << 8;
+            _word = (b << 8);
             _programStream.get(b);
-            _word += b;
+            _word |= byte(b);
 
             auto &opcode = makeOpcode(_word & 0xF000);
             if (opcode.valid(_word))
                 cout << "0x" << setfill('0') << hex << setw(2) << line << dec << setfill(' ') << "\t"
                      << opcode.toString(_word & 0x0FFF) << "\t\t## 0x" << setw(4) << setfill('0') << hex << _word << dec
                      << setfill(' ') << endl;
+            else
+                cout << "0x" << setfill('0') << hex << setw(2) << line << dec << setfill(' ') << "\t\t\t\t## 0x"
+                     << setw(4) << setfill('0') << hex << _word << dec << setfill(' ') << endl;
 
             line += State::OPCODE_BYTES;
         }

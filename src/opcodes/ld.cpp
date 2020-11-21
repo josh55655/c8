@@ -36,7 +36,7 @@ string LDI::toString(word _data) {
     stringstream ss;
     word val = getWord(_data);
     ss << NMEMONIC << " i"
-       << ", 0x" << setfill('0') << setw(4) << val << dec << setfill(' ');
+       << ", 0x" << hex << setfill('0') << setw(4) << val << dec << setfill(' ');
     return ss.str();
 }
 
@@ -121,7 +121,7 @@ string LDX::toString(word _data) {
 }
 
 bool LDX::valid(word _data) {
-    byte f = getNibble(_data);
+    byte f = getByte(_data);
     switch (f) {
     case GET_DT_OPCODE:
     case GET_KEY_OPCODE:
