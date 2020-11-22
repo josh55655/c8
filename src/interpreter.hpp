@@ -13,16 +13,18 @@ namespace chip8 {
 class Interpreter {
     using Clock = std::chrono::steady_clock;
     using TimePoint = Clock::time_point;
-    static constexpr std::size_t CLOCK_HZ{60};
 
     State _state;
     Core _core;
     std::unique_ptr<IOHandler> _io;
     TimePoint _lastTick;
     std::string _programFile;
+    std::size_t _clockHZ{CLOCK_HZ};
 
 public:
-    Interpreter(std::unique_ptr<IOHandler> &&_io, const std::string &_programFile = "");
+    static constexpr std::size_t CLOCK_HZ{60};
+
+    Interpreter(std::unique_ptr<IOHandler> &&_io, const std::string &_programFile = "", std::size_t clockHZ = CLOCK_HZ);
 
     void init();
     void load();
@@ -34,10 +36,12 @@ public:
 private:
     bool __started{false};
 
-    void checkTime();
+    bool checkTime();
 
-    static constexpr std::chrono::milliseconds CLOCK_RATE() {
-        return std::chrono::milliseconds(std::size_t((1.0 / CLOCK_HZ) * 1000 + 0.5));
+    std::chrono::milliseconds clockRate() const;
+
+    static constexpr std::chrono::milliseconds RATE(std::size_t hz) {
+        return std::chrono::milliseconds(std::size_t((1.0 / hz) * 1000 + 0.5));
     };
 };
 

@@ -81,7 +81,7 @@ void State::video(const std::vector<byte> &spriteMap, word address) {
 bool State::videoChanged() const { return _impl->videoChanged; }
 
 void State::tick() {
-    // update timers;
+    if (_impl->delayTimer > 0) --_impl->delayTimer;
 }
 
 void State::write(vector<byte> data, word address) { copy(data.begin(), data.end(), _impl->memory.begin() + address); }

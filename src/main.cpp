@@ -12,6 +12,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 using std::make_unique;
+using std::size_t;
 using std::string;
 using std::unique_ptr;
 
@@ -23,6 +24,7 @@ namespace {
 
 unique_ptr<IOHandler> ioHandler;
 string filename;
+size_t clockHZ;
 
 void parseArgs(int argc, char *argv[]);
 void run();
@@ -37,7 +39,7 @@ int main(int argc, char *argv[]) {
 
 namespace {
 void run() {
-    Interpreter i{std::move(ioHandler), filename};
+    Interpreter i{std::move(ioHandler), filename, clockHZ};
 
     i.init();
     i.load();
@@ -54,7 +56,8 @@ void parseArgs(int argc, char *argv[]) {
     desc.add_options()
         ("help", "produce help message")
         ("render,r", po::value<string>()->default_value("text"), "IO render type")
-        ("file", po::value<string>()->required(), "file to decode");
+        ("file", po::value<string>()->required(), "file to decode")
+        ("hz", po::value<size_t>()->default_value(Interpreter::CLOCK_HZ), "emulated CPU Herz");
     // clang-format on
 
     pd.add("file", 1);
@@ -74,6 +77,7 @@ void parseArgs(int argc, char *argv[]) {
     }
 
     filename = vm["file"].as<string>();
+    clockHZ = vm["hz"].as<size_t>();
     auto render = vm["render"].as<string>();
     if (render == "text")
         ioHandler = make_unique<TextIOHandler>(cout, cin);

@@ -26,8 +26,8 @@ using namespace std::chrono_literals;
 
 namespace chip8 {
 
-Interpreter::Interpreter(std::unique_ptr<IOHandler> &&_io, const std::string &_programFile)
-    : _core(_state), _io(std::move(_io)), _programFile(_programFile) {}
+Interpreter::Interpreter(std::unique_ptr<IOHandler> &&_io, const std::string &_programFile, std::size_t clockHZ)
+    : _core(_state), _io(std::move(_io)), _programFile(_programFile), _clockHZ(clockHZ) {}
 
 void Interpreter::init() {
     word nextAddress{0};
@@ -63,20 +63,28 @@ void Interpreter::load() {
 void Interpreter::run() {
     __started = true;
     _io->init(_state);
+    _lastTick = Clock::now();
 
     while (true) {
-        runOne();
-        updateVideo();
-        updateKeyboard();
+        if (checkTime()) {
+            runOne();
+            updateVideo();
+            updateKeyboard();
+        }
     }
 }
 
-void Interpreter::checkTime() {
-    if ((Clock::now() - _lastTick) >= CLOCK_RATE()) {
+bool Interpreter::checkTime() {
+    if ((Clock::now() - _lastTick) >= clockRate()) {
         _state.tick();
         _lastTick = Clock::now();
+        return true;
     }
+
+    return false;
 }
+
+milliseconds Interpreter::clockRate() const { return RATE(_clockHZ); };
 
 void Interpreter::runOne() {
     if (!__started) throw std::logic_error("Interpreter not STARTED!");
