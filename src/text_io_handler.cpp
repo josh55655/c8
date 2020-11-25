@@ -1,13 +1,19 @@
 #include "text_io_handler.hpp"
 
+#ifdef HAVE_TERMIOS
 #include <termios.h>
+#endif
+
+#ifdef HAVE_UNISTD
 #include <unistd.h>
+#endif
 
 #include <cstdio>
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <thread>
+#include <sstream>
 
 #include "core.hpp"
 #include "opcode.hpp"
@@ -29,17 +35,25 @@ using namespace std::chrono_literals;
 
 namespace chip8 {
 
+#ifdef HAVE_TERMIOS
 static struct termios oldt, newt;
+#endif
 
 TextIOHandler::TextIOHandler(ostream &_out, istream &_in) : _out(_out), _in(_in) {
+#ifdef HAVE_TERMIOS
     tcgetattr(STDIN_FILENO, &oldt);
     newt = oldt;
     newt.c_lflag &= ~ICANON;
     newt.c_lflag &= ~ECHO;
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+#endif
 }
 
-TextIOHandler::~TextIOHandler() noexcept { tcsetattr(STDIN_FILENO, TCSANOW, &oldt); }
+TextIOHandler::~TextIOHandler() noexcept { 
+#ifdef HAVE_TERMIOS
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt); 
+#endif
+}
 
 void TextIOHandler::log(const std::string &msg) { _out << msg << endl; }
 

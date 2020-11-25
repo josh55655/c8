@@ -8,7 +8,7 @@
 namespace chip8::opcode {
 
 class LD : public Opcode {
-    static constexpr char NMEMONIC[]{"ld"};
+    static constexpr char NMEMONIC[3]{"ld"};
 
 public:
     LD() : Opcode(".load", LD_OPCODE) {}
@@ -17,7 +17,7 @@ public:
 };
 
 class LDI : public Opcode {
-    static constexpr char NMEMONIC[]{"ld"};
+    static constexpr char NMEMONIC[3]{"ld"};
 
 public:
     LDI() : Opcode(".load", LDI_OPCODE) {}
@@ -26,7 +26,7 @@ public:
 };
 
 class ADD : public Opcode {
-    static constexpr char NMEMONIC[]{"add"};
+    static constexpr char NMEMONIC[4]{"add"};
 
 public:
     ADD() : Opcode(".load", ADD_OPCODE) {}
@@ -35,8 +35,8 @@ public:
 };
 
 class LDX : public Opcode {
-    static constexpr char NMEMONIC[]{"ld"};
-    static constexpr char ADD_NMEMONIC[]{"add"};
+    static constexpr char NMEMONIC[3]{"ld"};
+    static constexpr char ADD_NMEMONIC[4]{"add"};
     static constexpr word GET_DT_OPCODE{0x0007};
     static constexpr word GET_KEY_OPCODE{0x000A};
     static constexpr word SET_DT_OPCODE{0x0015};

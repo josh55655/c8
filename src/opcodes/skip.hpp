@@ -8,7 +8,7 @@
 namespace chip8::opcode {
 
 class SE : public Opcode {
-    static constexpr char NMEMONIC[]{"se"};
+    static constexpr char NMEMONIC[3]{"se"};
 
 public:
     SE() : Opcode(".skip", SE_OPCODE) {}
@@ -17,7 +17,7 @@ public:
 };
 
 class SNE : public Opcode {
-    static constexpr char NMEMONIC[]{"sne"};
+    static constexpr char NMEMONIC[4]{"sne"};
 
 public:
     SNE() : Opcode(".skip", SNE_OPCODE) {}
@@ -26,7 +26,7 @@ public:
 };
 
 class SER : public Opcode {
-    static constexpr char NMEMONIC[]{"se"};
+    static constexpr char NMEMONIC[3]{"se"};
 
 public:
     SER() : Opcode(".skip", SER_OPCODE) {}
@@ -35,7 +35,7 @@ public:
 };
 
 class SNER : public Opcode {
-    static constexpr char NMEMONIC[]{"sne"};
+    static constexpr char NMEMONIC[4]{"sne"};
 
 public:
     SNER() : Opcode(".skip", SNER_OPCODE) {}
@@ -44,9 +44,9 @@ public:
 };
 
 class SKP : public Opcode {
-    static constexpr char NMEMONIC[]{"skp"};
+    static constexpr char NMEMONIC[4]{"skp"};
     static constexpr word OPCODE{0x009E};
-    static constexpr char SKNP_NMEMONIC[]{"sknp"};
+    static constexpr char SKNP_NMEMONIC[5]{"sknp"};
     static constexpr word SKNP_OPCODE{0x00A1};
 
 public:

@@ -38,7 +38,7 @@ void Interpreter::init() {
 
     for (auto &digit : Core::FONT_SET) {
         _state.load(digit, nextAddress);
-        nextAddress += digit.size();
+        nextAddress += word(digit.size());
     }
 
     _lastTick = TimePoint::min();

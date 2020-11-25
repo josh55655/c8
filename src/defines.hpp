@@ -1,6 +1,7 @@
 #ifndef CHIP8_DEFINES_HPP
 #define CHIP8_DEFINES_HPP
 
+#include <cstddef>
 #include <cstdint>
 
 namespace chip8 {

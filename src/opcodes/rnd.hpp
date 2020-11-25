@@ -8,7 +8,7 @@
 namespace chip8::opcode {
 
 class RND : public Opcode {
-    static constexpr char NMEMONIC[]{"rnd"};
+    static constexpr char NMEMONIC[4]{"rnd"};
 
 public:
     RND() : Opcode(".random", RND_OPCODE) {}

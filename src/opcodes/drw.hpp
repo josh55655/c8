@@ -8,7 +8,7 @@
 namespace chip8::opcode {
 
 class DRW : public Opcode {
-    static constexpr char NMEMONIC[]{"drw"};
+    static constexpr char NMEMONIC[4]{"drw"};
 
 public:
     DRW() : Opcode(".draw", DRW_OPCODE) {}

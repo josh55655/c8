@@ -1,9 +1,11 @@
 #ifndef CHIP8_STATE_HPP
 #define CHIP8_STATE_HPP
 
+#include <array>
 #include <vector>
 #include <memory>
 #include <tuple>
+#include <string>
 
 #include "defines.hpp"
 #include "keyboard.hpp"

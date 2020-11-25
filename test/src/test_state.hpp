@@ -19,7 +19,6 @@ public:
     MOCK_METHOD(void, pc, (word), (override));
     MOCK_METHOD(void, push, (word), (override));
     MOCK_METHOD(word, pop, (), (override));
-    MOCK_METHOD(byte &, v, (byte), (override));
     MOCK_METHOD(byte &, v, (byte), (const override));
     MOCK_METHOD(void, keyPressed, (byte, bool), (override));
     MOCK_METHOD(bool, keyPressed, (byte), (const override));

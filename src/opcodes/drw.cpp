@@ -1,5 +1,6 @@
 #include "drw.hpp"
 
+#include <array>
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -7,6 +8,7 @@
 
 #include "../opcode_impl.hpp"
 
+using std::array;
 using std::dec;
 using std::hex;
 using std::setfill;
