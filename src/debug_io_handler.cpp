@@ -37,6 +37,8 @@ void DebugIOHandler::log(word pc, const Core::DecodedOperation &op) {
     cout << "0x" << setw(4) << setfill('0') << hex << pc << dec << " " << op.first.toString(op.second) << endl;
 }
 
+void DebugIOHandler::log(word pc) { cout << "Reading PC: 0x" << setw(4) << setfill('0') << hex << pc << dec << endl; }
+
 void DebugIOHandler::init(State &_state) {}
 
 void DebugIOHandler::draw(const State &_state) { cout << to_string(_state) << endl; }

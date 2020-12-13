@@ -48,7 +48,11 @@ word State::indexRegister() const { return _impl->i; }
 void State::indexRegister(word v) { _impl->i = v; }
 
 word State::pc() const { return _impl->pc; }
-void State::pc(word _pc) { _impl->pc = _pc; }
+void State::pc(word _pc) {
+    if (_pc > MEMORY_SIZE)
+        throw std::logic_error("Invalid PC: " + std::to_string(_pc) + "/" + std::to_string(MEMORY_SIZE));
+    _impl->pc = _pc;
+}
 
 void State::push(word datum) {
     _impl->stack[_impl->sp] = datum;
@@ -74,7 +78,8 @@ State::VideoMemory &State::video() const { return _impl->vMemory; }
 
 void State::video(const std::vector<byte> &spriteMap, word address) {
     word cursor{address};
-    for (auto p : spriteMap) _impl->vMemory[cursor++] = p;
+    for (auto p : spriteMap)
+        if (cursor < _impl->vMemory.size()) _impl->vMemory[cursor++] = p;
     _impl->videoChanged = true;
 }
 
@@ -133,6 +138,7 @@ string to_string(const State &state) {
 
     ss << endl;
     ss << "i: 0x" << setw(4) << setfill('0') << hex << state.indexRegister() << dec << setfill(' ') << endl;
+    ss << "pc: 0x" << setw(4) << setfill('0') << hex << state.pc() << dec << setfill(' ') << endl;
 
     return ss.str();
 }

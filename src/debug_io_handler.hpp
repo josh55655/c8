@@ -17,6 +17,7 @@ public:
 
     void log(const std::string &msg) override;
     void log(word pc, const Core::DecodedOperation &op) override;
+    void log(word pc) override;
 
     void init(State &_state) override;
     void draw(const State &_state) override;

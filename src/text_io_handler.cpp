@@ -49,9 +49,9 @@ TextIOHandler::TextIOHandler(ostream &_out, istream &_in) : _out(_out), _in(_in)
 #endif
 }
 
-TextIOHandler::~TextIOHandler() noexcept { 
+TextIOHandler::~TextIOHandler() noexcept {
 #ifdef HAVE_TERMIOS
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt); 
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 #endif
 }
 
@@ -107,7 +107,10 @@ vector<byte> TextIOHandler::load(istream &provider) {
 }
 
 void TextIOHandler::setChar(State &_state, char ch, bool pressed) {
-    if (ch >= 0x30 && ch <= 0x3f) _state.keyPressed(ch - 0x30, pressed);
+    if (ch >= 0x30 && ch <= 0x39)
+        _state.keyPressed(ch - 0x30, pressed);
+    else if (tolower(ch) >= 0x61 && tolower(ch) <= 0x66)
+        _state.keyPressed(tolower(ch) - 0x61 + 0x0a, pressed);
 }
 
 }  // namespace chip8
