@@ -6,6 +6,7 @@
 #include "interpreter.hpp"
 #include "debug_io_handler.hpp"
 #include "text_io_handler.hpp"
+#include "sdl_io_handler.hpp"
 
 using std::cerr;
 using std::cin;
@@ -57,7 +58,8 @@ void parseArgs(int argc, char *argv[]) {
         ("help", "produce help message")
         ("render,r", po::value<string>()->default_value("text"), "IO render type")
         ("file", po::value<string>()->required(), "file to decode")
-        ("hz", po::value<size_t>()->default_value(Interpreter::CLOCK_HZ), "emulated CPU Herz");
+        ("hz", po::value<size_t>()->default_value(Interpreter::CLOCK_HZ), "emulated CPU Herz")
+        ("magnify,m", po::value<size_t>()->default_value(20), "magnification factor");
     // clang-format on
 
     pd.add("file", 1);
@@ -83,6 +85,8 @@ void parseArgs(int argc, char *argv[]) {
         ioHandler = make_unique<TextIOHandler>(cout, cin);
     else if (render == "debug")
         ioHandler = make_unique<DebugIOHandler>();
+    else if (render == "sdl")
+        ioHandler = make_unique<SDLIOHandler>(cin, vm["magnify"].as<size_t>());
     else {
         cerr << "Invalid render type" << endl;
         exit(1);
