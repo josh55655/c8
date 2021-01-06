@@ -56,10 +56,14 @@ void parseArgs(int argc, char *argv[]) {
     // clang-format off
     desc.add_options()
         ("help", "produce help message")
-        ("render,r", po::value<string>()->default_value("text"), "IO render type")
+        ("render,r", po::value<string>()->default_value("sdl"),
+            "IO render type:\n"
+            "\tsdl\tgraphic [DEFAULT]\n"
+            "\ttext\ttext (needs a 64x32 terminal or more)\n"
+            "\tdebug\tdeassembled output only")
         ("file", po::value<string>()->required(), "file to decode")
-        ("hz", po::value<size_t>()->default_value(Interpreter::CLOCK_HZ), "emulated CPU Herz")
-        ("magnify,m", po::value<size_t>()->default_value(20), "magnification factor");
+        ("hz", po::value<size_t>()->default_value(Interpreter::CLOCK_HZ), "emulated CPU Herz [default: 200]")
+        ("magnify,m", po::value<size_t>()->default_value(20), "magnification factor [default: 20]");
     // clang-format on
 
     pd.add("file", 1);

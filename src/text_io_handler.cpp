@@ -71,7 +71,9 @@ void TextIOHandler::init(State &_state) {
     _inThread = std::make_unique<thread>([&]() {
         while (_running) {
             char ch = getchar();
-            if (ch != _lastCh) {
+            if (ch == 'q' || ch == 'Q')
+                _running = false;
+            else if (ch != _lastCh) {
                 setChar(_state, _lastCh, false);
                 setChar(_state, ch, true);
                 _lastCh = ch;
@@ -91,6 +93,16 @@ void TextIOHandler::draw(const State &_state) {
     }
 
     _out << ss.str() << endl;
+
+    if (!_running) {
+        _out << "\x1B[2J"
+             << "\x1B[1;1H" << endl;
+#ifdef HAVE_TERMIOS
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+#endif
+        _inThread->join();
+        exit(0);
+    }
 }
 
 vector<byte> TextIOHandler::load() { return load(_in); }
