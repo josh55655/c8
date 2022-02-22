@@ -400,11 +400,31 @@ TEST(OpCodesTest, DRAW_execute) {
     EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
     EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 2, 1}), 0xCA)).Times(1);
 
+    EXPECT_CALL(state, fetch()).WillOnce(Return(0xD123));
+    EXPECT_CALL(state, video()).WillOnce(ReturnRef(display));
+    EXPECT_CALL(state, v(1)).WillOnce(ReturnRef(xCord));
+    EXPECT_CALL(state, v(2)).WillOnce(ReturnRef(yCord));
+    EXPECT_CALL(state, indexRegister()).WillOnce(Return(0x30));
+    EXPECT_CALL(state, read(0x30, 3)).WillOnce(Return(vector<byte>({1, 2, 3})));
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 0, 1}), 0x4A));
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 2, 0}), 0x8A)).Times(1);
+
+    EXPECT_CALL(state, v(0xf)).WillRepeatedly(ReturnRef(vf));
+    EXPECT_CALL(state, video(vector<byte>({0, 0, 0, 0, 0, 0, 2, 1}), 0xCA)).Times(1);
+
     core.fetch();
     core.execute(core.decode());
     xCord = 10;
     yCord = 1;
     ASSERT_EQ(0, vf);
+    core.fetch();
+    core.execute(core.decode());
+    ASSERT_EQ(0, vf);
+    vf = 1;
     core.fetch();
     core.execute(core.decode());
     ASSERT_EQ(0, vf);
