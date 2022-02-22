@@ -1,4 +1,4 @@
-set(GTEST_VERSION master) #release-1.10.0)
+set(GTEST_VERSION release-1.11.0)
 set(GTEST_DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/lib/gtest-src)
 set(GTEST_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/lib/gtest)
 
