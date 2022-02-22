@@ -15,9 +15,9 @@
 #include <thread>
 #include <sstream>
 
-#include "core.hpp"
-#include "opcode.hpp"
-#include "state.hpp"
+#include "../core.hpp"
+#include "../opcode.hpp"
+#include "../state.hpp"
 
 using std::dec;
 using std::endl;

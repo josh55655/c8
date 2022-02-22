@@ -6,9 +6,9 @@
 #include <string>
 #include <thread>
 
-#include "core.hpp"
-#include "opcode.hpp"
-#include "state.hpp"
+#include "../core.hpp"
+#include "../opcode.hpp"
+#include "../state.hpp"
 
 using std::cout;
 using std::dec;

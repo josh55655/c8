@@ -8,9 +8,9 @@
 
 #include <SDL2/SDL.h>
 
-#include "core.hpp"
-#include "opcode.hpp"
-#include "state.hpp"
+#include "../core.hpp"
+#include "../opcode.hpp"
+#include "../state.hpp"
 
 using std::cout;
 using std::dec;
@@ -72,7 +72,8 @@ void SDLIOHandler::draw(const State &_state) {
     auto &v = _state.video();
     for (int i = 0; i < CHIP8_ROWS; ++i) {
         for (int j = 0; j < CHIP8_COLS; ++j) {
-            SDL_Rect fillRect = {j * screenWidth / CHIP8_COLS, i * screenHeight / CHIP8_ROWS, magnify, magnify};
+            SDL_Rect fillRect = {int(j * screenWidth / CHIP8_COLS), int(i * screenHeight / CHIP8_ROWS), magnify,
+                                 magnify};
             if (v[i * CHIP8_COLS + j]) SDL_RenderFillRect(renderer, &fillRect);
         }
     }

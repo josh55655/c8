@@ -4,9 +4,9 @@
 #include <boost/program_options.hpp>
 
 #include "interpreter.hpp"
-#include "debug_io_handler.hpp"
-#include "text_io_handler.hpp"
-#include "sdl_io_handler.hpp"
+#include "io/debug_io_handler.hpp"
+#include "io/text_io_handler.hpp"
+#include "io/sdl_io_handler.hpp"
 
 using std::cerr;
 using std::cin;
@@ -58,9 +58,9 @@ void parseArgs(int argc, char *argv[]) {
         ("help", "produce help message")
         ("render,r", po::value<string>()->default_value("sdl"),
             "IO render type:\n"
-            "\tsdl\tgraphic [DEFAULT]\n"
-            "\ttext\ttext (needs a 64x32 terminal or more)\n"
-            "\tdebug\tdeassembled output only")
+            "\tsdl   : graphic [DEFAULT]\n"
+            "\ttext  : text (needs a 64x32 terminal or more)\n"
+            "\tdebug : deassembled output only")
         ("file", po::value<string>()->required(), "file to decode")
         ("hz", po::value<size_t>()->default_value(Interpreter::CLOCK_HZ), "emulated CPU Herz [default: 200]")
         ("magnify,m", po::value<size_t>()->default_value(20), "magnification factor [default: 20]");

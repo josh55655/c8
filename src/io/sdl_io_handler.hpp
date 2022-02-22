@@ -5,8 +5,8 @@
 #include <iostream>
 #include <thread>
 
-#include "core.hpp"
-#include "io_handler.hpp"
+#include "../core.hpp"
+#include "../io_handler.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -21,7 +21,7 @@ class SDLIOHandler : public IOHandler {
     bool _running;
     char _lastCh;
     std::istream &_in;
-    const size_t magnify{20};
+    const int magnify{20};
     const size_t screenWidth;
     const size_t screenHeight;
 
