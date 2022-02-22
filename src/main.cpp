@@ -7,6 +7,7 @@
 #include "io/debug_io_handler.hpp"
 #include "io/text_io_handler.hpp"
 #include "io/sdl_io_handler.hpp"
+#include "io/sdldebug_io_handler.hpp"
 
 using std::cerr;
 using std::cin;
@@ -60,7 +61,8 @@ void parseArgs(int argc, char *argv[]) {
             "IO render type:\n"
             "\tsdl   : graphic [DEFAULT]\n"
             "\ttext  : text (needs a 64x32 terminal or more)\n"
-            "\tdebug : deassembled output only")
+            "\tdebug : deassembled output only\n"
+            "\tdsdl  : deassembled output with SDL graphics")
         ("file", po::value<string>()->required(), "file to decode")
         ("hz", po::value<size_t>()->default_value(Interpreter::CLOCK_HZ), "emulated CPU Herz [default: 200]")
         ("magnify,m", po::value<size_t>()->default_value(20), "magnification factor [default: 20]");
@@ -91,6 +93,8 @@ void parseArgs(int argc, char *argv[]) {
         ioHandler = make_unique<DebugIOHandler>();
     else if (render == "sdl")
         ioHandler = make_unique<SDLIOHandler>(cin, vm["magnify"].as<size_t>());
+    else if (render == "dsdl")
+        ioHandler = make_unique<SDLDebugIOHandler>(cin, vm["magnify"].as<size_t>());
     else {
         cerr << "Invalid render type" << endl;
         exit(1);

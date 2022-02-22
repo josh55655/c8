@@ -5,7 +5,7 @@
 #include <chrono>
 
 #include "core.hpp"
-#include "io_handler.hpp"
+#include "io/io_handler.hpp"
 #include "state.hpp"
 
 namespace chip8 {

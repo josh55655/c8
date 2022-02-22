@@ -42,7 +42,8 @@ add_library(c8support
         src/keyboard.cpp
         src/io/text_io_handler.cpp
         src/io/sdl_io_handler.cpp
-        src/io/debug_io_handler.cpp)
+        src/io/debug_io_handler.cpp
+        src/io/sdldebug_io_handler.cpp)
 
 add_executable(chip8 src/main.cpp)
 add_executable(dch8 src/dch8.cpp)

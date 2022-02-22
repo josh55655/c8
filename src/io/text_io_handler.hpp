@@ -6,7 +6,7 @@
 #include <thread>
 
 #include "../core.hpp"
-#include "../io_handler.hpp"
+#include "io_handler.hpp"
 
 namespace chip8 {
 

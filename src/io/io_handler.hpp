@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "core.hpp"
+#include "../core.hpp"
 
 namespace chip8 {
 

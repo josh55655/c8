@@ -6,7 +6,7 @@
 #include <thread>
 
 #include "../core.hpp"
-#include "../io_handler.hpp"
+#include "io_handler.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;
