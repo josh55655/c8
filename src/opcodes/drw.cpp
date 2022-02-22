@@ -28,6 +28,8 @@ void DRW::apply(State &state, word _data) {
     auto vMemory = state.video();
     byte cx = state.v(r1), cy = state.v(r2);
     auto sprite = state.read(state.indexRegister(), h);
+    state.v(0xf) = 0;
+
     while (y < h) {
         vector<byte> row;
         for (byte x = 0; x < 8; ++x) {

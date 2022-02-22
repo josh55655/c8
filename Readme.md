@@ -66,3 +66,4 @@ You can use different renderers with flag `-r`:
 * sdl: default renderer. Creates an SDL window where every point is a square with side equals to magnify value.
 * text: render graphics using ascii symbols in a terminal 64x32 chars
 * debug: show instructions and registers at every step
+* dsdl: show instructions and registers at every step, with default rendering

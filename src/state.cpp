@@ -131,8 +131,8 @@ void State::storeBCD(byte value) {
 string to_string(const State &state) {
     stringstream ss;
     for (int i = 0; i < 0x10; ++i) {
-        ss << "v" << setfill('0') << setw(2) << i << ": 0x" << setw(2) << hex << word(state.v(i)) << dec << setfill(' ')
-           << " ";
+        ss << "v" << setfill('0') << setw(1) << hex << i << dec << ": 0x" << setw(2) << hex << word(state.v(i)) << dec
+           << setfill(' ') << " ";
         if (i == 0x07) ss << endl;
     }
 
