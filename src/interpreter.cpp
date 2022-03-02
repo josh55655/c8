@@ -60,14 +60,14 @@ void Interpreter::load() {
     _io->log("CHIP8 Program loaded.");
 }
 
-void Interpreter::run() {
+void Interpreter::run( string logFileName ) {
     __started = true;
     _io->init(_state);
     _lastTick = Clock::now();
 
     while (true) {
         if (checkTime()) {
-            runOne();
+            runOne( logFileName );
             updateVideo();
             updateKeyboard();
         }
@@ -86,14 +86,30 @@ bool Interpreter::checkTime() {
 
 milliseconds Interpreter::clockRate() const { return RATE(_clockHZ); };
 
-void Interpreter::runOne() {
+void Interpreter::runOne( string logFileName ) {
     if (!__started) throw std::logic_error("Interpreter not STARTED!");
 
     auto pc = _state.pc();
     _core.fetch();
     auto op = _core.decode();
     _io->log(pc, op);
+
+    ofstream logfile;
+    logfile.open ( logFileName );
+    logfile << Clock::now(); //* the point in time when the instruction is executed
+    logfile << "\n";
+    logfile << op;   //* the instruction itself
+    logfile << "\n";
+    logfile << _state.indexRegister(); //* the resulting state of the registry -> i
+    logfile << "\n";
+	logfile << _state.pc(); //* the resulting state of the registry  ->pc
+	logfile << "\n";
+    logfile.close();
+
     _core.execute(std::move(op));
+
+
+    //* the resulting state of the registry (including `i` and `pc`) i = ; pc  =
 }
 
 void Interpreter::updateVideo() {
