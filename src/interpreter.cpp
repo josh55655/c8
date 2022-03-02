@@ -64,13 +64,47 @@ void Interpreter::run() {
     __started = true;
     _io->init(_state);
     _lastTick = Clock::now();
+    char c;
+    byte p = (byte)'P'; // Pause Key
+    byte r = (byte)'R'; // Run One Key
+    byte e = (byte)'E'; // Normal Execution Key
+    bool ssFlag = true; // start stop flag
 
     while (true) {
-        if (checkTime()) {
-            runOne();
-            updateVideo();
-            updateKeyboard();
-        }
+    	if (checkTime()) {
+    		if ( _state.keyPressed(p) )
+    		{
+    			c = 'P';
+    		}
+    		else if ( _state.keyPressed(r) )
+    		{
+    			c = 'R';
+    		}
+    		else if ( _state.keyPressed(e) )
+    		{
+    			c = 'E';
+    		}
+    		switch ( c )
+    		{
+    		case 'P': // pause execution
+                ssFlag = false;
+    			break;
+    		case 'R': // run one statement
+    			runOne();
+    			updateVideo();
+    			ssFlag = false;
+    			break;
+    		case 'E': // restore normal execution
+    			ssFlag = true;
+    			break;
+
+    		}
+    		if ( ssFlag )
+    		{
+    			runOne();
+    			updateVideo();
+    		}
+    	}
     }
 }
 
@@ -94,6 +128,10 @@ void Interpreter::runOne() {
     auto op = _core.decode();
     _io->log(pc, op);
     _core.execute(std::move(op));
+
+    //* the point in time when the instruction is executed = Clock::now()
+    //* the instruction itself = op
+    //* the +*resulting state of the registry (including `i` and `pc`) i = _state.indexRegister(); pc  = _state.pc();
 }
 
 void Interpreter::updateVideo() {
