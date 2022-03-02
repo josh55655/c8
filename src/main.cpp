@@ -29,23 +29,34 @@ string filename;
 size_t clockHZ;
 
 void parseArgs(int argc, char *argv[]);
-void run();
+void run( string logFileName );
 
 }  // namespace
 
 int main(int argc, char *argv[]) {
+
+	string newLogFileName = "default.log";
+
+	for ( int argIndex = 0; argIndex < argc - 1; argIndex++  )
+	{
+       if ( argv[argIndex].compare("-t") == 0 )
+       {
+    	   newLogFileName = argv[argIndex+1];
+       }
+	}
+
     parseArgs(argc, argv);
-    run();
+    run( newLogFileName);
     return 0;
 }
 
 namespace {
-void run() {
+void run( string logFileName ) {
     Interpreter i{std::move(ioHandler), filename, clockHZ};
 
     i.init();
     i.load();
-    i.run();
+    i.run( logFileName );
 }
 
 void parseArgs(int argc, char *argv[]) {
