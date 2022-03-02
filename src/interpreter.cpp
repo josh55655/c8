@@ -64,13 +64,30 @@ void Interpreter::run() {
     __started = true;
     _io->init(_state);
     _lastTick = Clock::now();
+    char c;
 
     while (true) {
-        if (checkTime()) {
-            runOne();
-            updateVideo();
-            updateKeyboard();
-        }
+    	if (checkTime()) {
+			if ( _state.noKeyPressed() )
+			{
+				c = 'A';
+			}
+			else
+			{
+				c = 'B';
+			}
+    		switch ( c )
+    		{
+    		case 'A':
+    			runOne();
+    			updateVideo();
+    			break;
+    		case 'B':
+    			updateKeyboard();
+    			// run interrupt handler here ..
+    			break;
+    		}
+    	}
     }
 }
 
