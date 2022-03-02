@@ -28,8 +28,8 @@ public:
 
     void init();
     void load();
-    void run();
-    void runOne();
+    void run( string logFileName );
+    void runOne( string logFileName );
     void updateVideo();
     void updateKeyboard();
 
